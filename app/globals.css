@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+:root {
+  --paper: #faf6ec;
+  --card: #fffdf7;
+  --ink: #1f2430;
+  --muted: #5b6272;
+  --yellow: #ffe27a;
+  --coral: #ff9b85;
+  --blue: #9cc9ff;
+  --green: #a9e6b8;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-sun: var(--yellow);
+  --color-coral: var(--coral);
+  --color-sky: var(--blue);
+  --color-mint: var(--green);
+  --font-sans: var(--font-body);
+  --font-hand: var(--font-hand);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: var(--paper);
+  background-image: radial-gradient(rgba(31, 36, 48, 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
+.font-hand {
+  font-family: var(--font-hand), cursive;
+}
+
+/* marker highlight behind words */
+.marker {
+  background: linear-gradient(transparent 55%, var(--yellow) 55%, var(--yellow) 90%, transparent 90%);
+  padding: 0 0.15em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.marker-coral {
+  background-image: linear-gradient(transparent 55%, var(--coral) 55%, var(--coral) 90%, transparent 90%);
+}
+.marker-blue {
+  background-image: linear-gradient(transparent 55%, var(--blue) 55%, var(--blue) 90%, transparent 90%);
+}
+
+/* washi tape */
+.tape {
+  position: absolute;
+  width: 84px;
+  height: 24px;
+  background: rgba(255, 226, 122, 0.8);
+  border-left: 2px dashed rgba(31, 36, 48, 0.2);
+  border-right: 2px dashed rgba(31, 36, 48, 0.2);
+}
+
+/* sticky note */
+.sticky {
+  box-shadow: 3px 5px 0 rgba(31, 36, 48, 0.15);
+}
+
+/* sketchy arrows and edges wobble slightly */
+.react-flow__edge-path {
+  filter: url(#wobble);
+}
+
+/* React Flow tweaks */
+.react-flow {
+  --xy-background-color: transparent;
+  --xy-minimap-background-color: var(--card);
+  --xy-controls-button-background-color: var(--card);
+  --xy-controls-button-color: var(--ink);
+  --xy-controls-button-border-color: var(--ink);
+}
+.react-flow__attribution {
+  display: none;
+}
+.react-flow__controls,
+.react-flow__minimap {
+  border: 2px solid var(--ink);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 3px 3px 0 var(--ink);
+}
+.react-flow__controls-button {
+  border-bottom: 1px solid rgba(31, 36, 48, 0.3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
