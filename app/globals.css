@@ -1,14 +1,37 @@
 @import "tailwindcss";
 
-:root {
+/* ---------- THEMES ---------- */
+:root,
+:root[data-theme="paper"] {
   --paper: #faf6ec;
   --card: #fffdf7;
   --ink: #1f2430;
   --muted: #5b6272;
+  --shadow: #1f2430;
+  --grid: rgba(31, 36, 48, 0.13);
   --yellow: #ffe27a;
   --coral: #ff9b85;
   --blue: #9cc9ff;
   --green: #a9e6b8;
+  --on-accent: #1f2430;
+  --accent: #f0644a;
+  --glow: transparent;
+}
+
+:root[data-theme="dark"] {
+  --paper: #14110e;
+  --card: #1f1b17;
+  --ink: #f2e8d5;
+  --muted: #a89c88;
+  --shadow: rgba(255, 170, 60, 0.38);
+  --grid: rgba(242, 232, 213, 0.09);
+  --yellow: #5a4510;
+  --coral: #6a2f21;
+  --blue: #1d4a47;
+  --green: #35501f;
+  --on-accent: #fff6e4;
+  --accent: #ff9a3c;
+  --glow: rgba(255, 170, 60, 0.5);
 }
 
 @theme inline {
@@ -18,6 +41,7 @@
   --color-muted: var(--muted);
   --color-sun: var(--yellow);
   --color-coral: var(--coral);
+  --color-accent: var(--accent);
   --color-sky: var(--blue);
   --color-mint: var(--green);
   --font-sans: var(--font-body);
@@ -31,14 +55,27 @@ body {
 
 body {
   background-color: var(--paper);
-  background-image: radial-gradient(rgba(31, 36, 48, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(var(--grid) 1px, transparent 1px);
   background-size: 22px 22px;
   color: var(--ink);
   font-family: var(--font-body), system-ui, sans-serif;
+  transition: background-color 0.4s, color 0.4s;
+}
+
+:root[data-theme="dark"] body {
+  background-image: radial-gradient(var(--grid) 1px, transparent 1px),
+    radial-gradient(ellipse at 15% 8%, rgba(255, 140, 50, 0.1), transparent 55%),
+    radial-gradient(ellipse at 92% 92%, rgba(255, 190, 90, 0.07), transparent 50%);
+  background-size: 22px 22px, 100% 100%, 100% 100%;
 }
 
 .font-hand {
   font-family: var(--font-hand), cursive;
+}
+
+/* dark: neon glow on key text and accents */
+:root[data-theme="dark"] .glow {
+  text-shadow: 0 0 18px var(--glow);
 }
 
 /* marker highlight behind words */
@@ -48,11 +85,8 @@ body {
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
-.marker-coral {
-  background-image: linear-gradient(transparent 55%, var(--coral) 55%, var(--coral) 90%, transparent 90%);
-}
-.marker-blue {
-  background-image: linear-gradient(transparent 55%, var(--blue) 55%, var(--blue) 90%, transparent 90%);
+:root[data-theme="dark"] .marker {
+  background-image: linear-gradient(transparent 60%, rgba(255, 170, 60, 0.4) 60%, rgba(255, 170, 60, 0.4) 92%, transparent 92%);
 }
 
 /* washi tape */
@@ -60,28 +94,90 @@ body {
   position: absolute;
   width: 84px;
   height: 24px;
-  background: rgba(255, 226, 122, 0.8);
-  border-left: 2px dashed rgba(31, 36, 48, 0.2);
-  border-right: 2px dashed rgba(31, 36, 48, 0.2);
+  background: color-mix(in srgb, var(--yellow) 80%, transparent);
+  border-left: 2px dashed color-mix(in srgb, var(--ink) 25%, transparent);
+  border-right: 2px dashed color-mix(in srgb, var(--ink) 25%, transparent);
 }
 
-/* sticky note */
 .sticky {
-  box-shadow: 3px 5px 0 rgba(31, 36, 48, 0.15);
+  box-shadow: 3px 5px 0 var(--shadow);
 }
 
-/* sketchy arrows and edges wobble slightly */
-.react-flow__edge-path {
+/* ---------- MOTION ---------- */
+@keyframes draw-in {
+  from {
+    stroke-dashoffset: var(--len);
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.rough-draw path {
+  stroke-dasharray: var(--len);
+  animation: draw-in 1.3s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-6px) rotate(var(--r, 0deg));
+  }
+}
+.float {
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes ping-soft {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.ping-soft {
+  animation: ping-soft 1.8s ease-out infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+.flow-line {
+  stroke-dasharray: 4 7;
+  animation: dash-flow 1.2s linear infinite;
+}
+
+/* sketchy edges wobble slightly */
+.react-flow__edge-path,
+.wobble {
   filter: url(#wobble);
 }
 
-/* React Flow tweaks */
+/* ---------- REACT FLOW ---------- */
 .react-flow {
   --xy-background-color: transparent;
   --xy-minimap-background-color: var(--card);
   --xy-controls-button-background-color: var(--card);
   --xy-controls-button-color: var(--ink);
   --xy-controls-button-border-color: var(--ink);
+  --xy-controls-button-background-color-hover: var(--yellow);
+  --xy-controls-button-color-hover: var(--on-accent);
 }
 .react-flow__attribution {
   display: none;
@@ -91,15 +187,32 @@ body {
   border: 2px solid var(--ink);
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 3px 3px 0 var(--ink);
+  box-shadow: 3px 3px 0 var(--shadow);
 }
 .react-flow__controls-button {
-  border-bottom: 1px solid rgba(31, 36, 48, 0.3);
+  border-bottom: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
+}
+.react-flow__controls-button svg {
+  fill: currentColor;
+}
+.react-flow__edge-path {
+  stroke: var(--ink) !important;
+  animation: dash-flow 0.9s linear infinite;
+}
+.packet {
+  filter: drop-shadow(0 0 6px var(--glow));
+}
+.react-flow__arrowhead polyline {
+  stroke: var(--ink) !important;
+  fill: var(--ink) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
 }
