@@ -42,7 +42,7 @@ export function ChatWidget() {
       {open && (
         <section
           aria-label="Ask about me"
-          className="mb-3 flex h-[min(520px,70dvh)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-[5px_5px_0_#1f2430]"
+          className="mb-3 flex h-[min(520px,70dvh)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-[5px_5px_0_var(--shadow)]"
         >
           <header className="flex items-center justify-between border-b-2 border-ink bg-sun px-4 py-2.5">
             <div>
@@ -59,7 +59,7 @@ export function ChatWidget() {
               <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
                 <p
                   className={`max-w-[85%] whitespace-pre-line rounded-2xl border-2 border-ink px-3 py-2 text-sm leading-relaxed ${
-                    m.role === "user" ? "bg-sky" : "bg-white"
+                    m.role === "user" ? "bg-sky" : "bg-card"
                   }`}
                 >
                   {m.text}
@@ -89,7 +89,7 @@ export function ChatWidget() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask anything…"
               aria-label="Your question"
-              className="min-w-0 flex-1 rounded-lg border-2 border-ink bg-white px-3 py-2 text-sm outline-none focus:bg-sun/30"
+              className="min-w-0 flex-1 rounded-lg border-2 border-ink bg-card px-3 py-2 text-sm outline-none focus:bg-sun/30"
             />
             <button type="submit" aria-label="Send" className="grid w-11 place-items-center rounded-lg border-2 border-ink bg-coral">
               <Send size={16} />
@@ -101,7 +101,7 @@ export function ChatWidget() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Ask me anything"}
-        className="ml-auto flex items-center gap-2 rounded-full border-2 border-ink bg-coral p-3 font-bold shadow-[4px_4px_0_#1f2430] sm:px-4 transition hover:-translate-y-0.5"
+        className="ml-auto flex items-center gap-2 rounded-full border-2 border-ink bg-coral p-3 font-bold shadow-[4px_4px_0_var(--shadow)] sm:px-4 transition hover:-translate-y-0.5"
       >
         <MessageCircle size={20} aria-hidden />
         <span className="font-hand hidden text-xl leading-none sm:inline">Ask me anything</span>

@@ -4,6 +4,7 @@ import { Fragment, type ReactNode } from "react";
 import { LayoutList } from "lucide-react";
 import { profile, sections, type SectionId } from "@/data/profile";
 import { DownArrow } from "@/components/ui/Sketch";
+import { ThemeToggle } from "@/lib/theme";
 import { Intro } from "@/components/sections/Intro";
 import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
@@ -27,9 +28,10 @@ export function Story({ onOverview }: { onOverview: () => void }) {
       <header className="sticky top-0 z-20 border-b-2 border-ink bg-paper/95 backdrop-blur">
         <div className="flex items-center justify-between gap-2 px-4 py-2.5">
           <p className="font-hand text-2xl font-bold leading-none">{profile.name}</p>
+          <ThemeToggle className="ml-auto !h-8 !w-8" />
           <button
             onClick={onOverview}
-            className="flex items-center gap-1.5 rounded-lg border-2 border-ink bg-mint px-3 py-1.5 text-xs font-bold shadow-[2px_2px_0_#1f2430]"
+            className="flex items-center gap-1.5 rounded-lg border-2 border-ink bg-mint px-3 py-1.5 text-xs font-bold shadow-[2px_2px_0_var(--shadow)]"
           >
             <LayoutList size={14} aria-hidden /> Quick overview
           </button>

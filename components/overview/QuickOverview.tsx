@@ -5,18 +5,22 @@ import { profile } from "@/data/profile";
 import { Sketch, Tag } from "@/components/ui/Sketch";
 import { SocialLinks } from "@/components/sections/SocialLinks";
 import { ResumeButton } from "@/components/sections/Contact";
+import { ThemeToggle } from "@/lib/theme";
 
 /** Plain-language, no-panning summary aimed at recruiters and HR. */
 export function QuickOverview({ onBack }: { onBack: () => void }) {
   return (
     <div className="min-h-dvh pb-28">
       <div className="mx-auto max-w-3xl px-4 py-6 sm:py-10">
-        <button
-          onClick={onBack}
-          className="mb-6 inline-flex items-center gap-2 rounded-lg border-2 border-ink bg-card px-3 py-1.5 text-sm font-bold shadow-[2px_2px_0_#1f2430]"
-        >
-          <ArrowLeft size={16} aria-hidden /> Back to the whiteboard
-        </button>
+        <div className="mb-6 flex items-center justify-between">
+          <button
+            onClick={onBack}
+            className="inline-flex items-center gap-2 rounded-lg border-2 border-ink bg-card px-3 py-1.5 text-sm font-bold shadow-[2px_2px_0_var(--shadow)]"
+          >
+            <ArrowLeft size={16} aria-hidden /> Back to the whiteboard
+          </button>
+          <ThemeToggle />
+        </div>
 
         <Sketch seed={5} className="p-6 sm:p-8">
           <div className="flex flex-col items-center gap-5 text-center sm:flex-row sm:text-left">
