@@ -16,14 +16,17 @@ export function ResumeButton({ className = "" }: { className?: string }) {
   );
 }
 
-export function Contact() {
+/** Contact card. `hideTitle` is for places (like the overview) that already render their own heading. */
+export function Contact({ hideTitle = false }: { hideTitle?: boolean }) {
   return (
     <Sketch seed={71} fill="yellow" className="p-6 sm:p-8">
       <FloatIcon icon={Smile} color="green" className="-right-5 -top-5" rotate={10} />
       <CurvyArrow label="say hi!" className="bottom-3 right-5" />
-      <SectionTitle icon={Send} color="coral">
-        Let&apos;s talk
-      </SectionTitle>
+      {!hideTitle && (
+        <SectionTitle icon={Send} color="coral">
+          Let&apos;s talk
+        </SectionTitle>
+      )}
       <p className="mb-5 text-[15px] leading-relaxed">
         {profile.availability}. Grab my resume, or say hi.
       </p>
