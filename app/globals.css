@@ -53,6 +53,10 @@ body {
   height: 100%;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--paper);
   background-image: radial-gradient(var(--grid) 1px, transparent 1px);
@@ -101,6 +105,56 @@ body {
 
 .sticky {
   box-shadow: 3px 5px 0 var(--shadow);
+}
+
+/* ---------- INTERACTION ---------- */
+a[href],
+button:not(:disabled),
+[role="button"],
+summary,
+select,
+label[for] {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* every clickable thing eases up on hover and presses down on click (uses the standalone
+   `scale` property so it never fights Tailwind's translate / rotate utilities) */
+a[href],
+button {
+  transition: scale 0.18s ease, translate 0.18s ease, rotate 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+a[href]:hover,
+button:not(:disabled):hover {
+  scale: 1.04;
+}
+a[href]:active,
+button:not(:disabled):active {
+  scale: 0.97;
+}
+button[data-card]:not(:disabled):hover,
+a[data-card]:hover {
+  scale: 1.015;
+}
+button svg,
+a[href] svg {
+  transition: rotate 0.25s ease, translate 0.25s ease;
+}
+button:hover > svg:not([class*="flow"]),
+a[href]:hover > svg {
+  rotate: 8deg;
+}
+
+/* sticky notes straighten up and lift when hovered */
+.sticky {
+  transition: rotate 0.25s ease, scale 0.25s ease, translate 0.25s ease;
+}
+.sticky:hover {
+  rotate: 0deg;
+  scale: 1.03;
+  translate: 0 -3px;
 }
 
 /* ---------- MOTION ---------- */

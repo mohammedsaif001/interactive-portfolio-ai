@@ -71,11 +71,15 @@ type SketchProps = {
   onClick?: () => void;
 };
 
+/**
+ * Hand-drawn card. When rendered as a link or button it is tagged `data-card`, which lets the global
+ * hover rules give large cards a gentler scale than small buttons.
+ */
 export function Sketch({ children, className = "", fill = "card", seed = 7, roughness = 1.3, style, as = "div", href, onClick }: SketchProps) {
   const Tag = as as "div";
   const extra = as === "a" ? { href, target: "_blank", rel: "noreferrer" } : as === "button" ? { type: "button" as const, onClick } : {};
   return (
-    <Tag className={`relative ${className}`} style={style} {...extra}>
+    <Tag className={`relative ${className}`} style={style} data-card={as === "a" || as === "button" ? "" : undefined} {...extra}>
       <RoughBorder fill={fill} seed={seed} roughness={roughness} />
       <div className="relative">{children}</div>
     </Tag>
@@ -84,7 +88,7 @@ export function Sketch({ children, className = "", fill = "card", seed = 7, roug
 
 export function Tag({ children, color = "card" }: { children: ReactNode; color?: Fill }) {
   return (
-    <span className="inline-block rounded-full border-2 border-ink px-2.5 py-0.5 text-xs font-semibold" style={{ background: `var(--${color})` }}>
+    <span className="inline-block rounded-full border-2 border-ink px-2.5 py-0.5 text-xs font-semibold transition duration-200 hover:-translate-y-0.5 hover:rotate-2" style={{ background: `var(--${color})` }}>
       {children}
     </span>
   );
