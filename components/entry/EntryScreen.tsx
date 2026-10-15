@@ -7,7 +7,9 @@ import { profile } from "@/data/profile";
 import { Sketch } from "@/components/ui/Sketch";
 import { Typewriter } from "@/components/ui/Motion";
 import { ThemeToggle } from "@/lib/theme";
+import { BigScreenNotice } from "@/components/ui/BigScreenNotice";
 
+// Lines of the fake terminal shown while the page "boots". Purely decorative.
 const BOOT = [
   { text: 'portfolio --user "mohammed"', prompt: true },
   { text: "loading experience ........ done" },
@@ -30,6 +32,7 @@ export function EntryScreen({ onExplore, onOverview, isDesktop }: Props) {
     () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
     () => false,
   );
+  // Visitors who prefer reduced motion skip the boot sequence and go straight to the reveal.
   const phase = reduced ? "ready" : booted;
 
   useEffect(() => {
@@ -103,11 +106,17 @@ export function EntryScreen({ onExplore, onOverview, isDesktop }: Props) {
               <Typewriter words={profile.rotatingRoles} />
             </motion.p>
 
-            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.75 }} className="mt-9 grid gap-5 sm:grid-cols-2">
+            {!isDesktop && (
+              <motion.div initial={{ y: 16, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.7 }} className="mt-8">
+                <BigScreenNotice />
+              </motion.div>
+            )}
+
+            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.75 }} className={`${isDesktop ? "mt-9" : "mt-0"} grid gap-5 sm:grid-cols-2`}>
               <button onClick={onExplore} autoFocus className="text-left transition hover:-translate-y-1">
                 <Sketch fill="yellow" seed={91} className="p-5">
                   <Compass size={28} aria-hidden />
-                  <p className="font-hand mt-2 text-3xl font-bold leading-none">{isDesktop ? "Explore the whiteboard" : "Take the tour"}</p>
+                  <p className="font-hand mt-2 text-3xl font-bold leading-none">{isDesktop ? "Explore the whiteboard" : "Continue on mobile"}</p>
                   <p className="mt-1 text-sm">{isDesktop ? "Pan around my story, projects and skills." : "Scroll through my story, projects and skills."}</p>
                 </Sketch>
               </button>
