@@ -3,32 +3,35 @@
 import { useEffect, useRef, useState } from "react";
 import { Cloud, Cpu, Database, Monitor, Server, Sparkles, type LucideIcon } from "lucide-react";
 import { profile, type SkillGroup } from "@/data/profile";
-import { Sketch, SectionTitle, Tag } from "@/components/ui/Sketch";
+import { Sketch, SectionTitle } from "@/components/ui/Sketch";
+import { TechChip } from "@/components/ui/TechChip";
 
 // Logical size of the diagram in px. It is drawn at this size and scaled to fit its container.
 const W = 700;
-const H = 580;
-const NW = 190;
-const NH = 176; // tall enough for a title, a caption and up to three rows of tags
+const H = 706;
+const NW = 190; // default node width
+// Frontend holds the most logos, so it gets the widest card.
+const widthOf: Partial<Record<SkillGroup["id"], number>> = { frontend: 240, backend: 150, genai: 220 };
+const NH = 272; // tall enough for a title, a caption and up to three rows of logo chips
 
 const icons: Record<SkillGroup["id"], LucideIcon> = { frontend: Monitor, backend: Server, genai: Sparkles, data: Database, cloud: Cloud };
 
 type Pos = { x: number; y: number };
 const pos: Record<SkillGroup["id"], Pos> = {
   frontend: { x: 20, y: 24 },
-  backend: { x: 255, y: 24 },
-  genai: { x: 490, y: 24 },
-  data: { x: 372, y: 240 },
-  cloud: { x: 20, y: 446 },
+  backend: { x: 285, y: 24 },
+  genai: { x: 460, y: 24 },
+  data: { x: 372, y: 330 },
+  cloud: { x: 20, y: 574 },
 };
 
 // system flow: UI -> API -> LLM, API/LLM -> data store, everything runs on cloud
 const flows = [
-  { id: "f1", d: "M210 112 L253 112" },
-  { id: "f2", d: "M445 112 L488 112" },
-  { id: "f3", d: "M350 200 C350 228 440 224 460 238" },
-  { id: "f4", d: "M585 200 C585 228 500 224 480 238" },
-  { id: "f5", d: "M467 416 L467 444" },
+  { id: "f1", d: "M262 112 L283 112" },
+  { id: "f2", d: "M437 112 L458 112" },
+  { id: "f3", d: "M360 298 C360 318 440 314 460 328" },
+  { id: "f4", d: "M570 298 C570 318 500 314 480 328" },
+  { id: "f5", d: "M467 536 L467 572" },
 ];
 
 /** Tracks an element's width so the diagram can scale, or fall back to a list, as the frame is resized. */
@@ -63,7 +66,7 @@ export function Skills() {
 
       <div ref={ref} className="nopan nodrag">
         {wide ? (
-          <div style={{ width: W * scale, height: H * scale }}>
+          <div className="mx-auto" style={{ width: W * scale, height: H * scale }}>
             <div className="relative origin-top-left" style={{ width: W, height: H, transform: `scale(${scale})` }}>
               <svg aria-hidden width={W} height={H} viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 text-ink" fill="none">
                 <defs>
@@ -96,7 +99,7 @@ export function Skills() {
                     onClick={() => setSel(s.id)}
                     aria-pressed={active}
                     className="absolute text-left transition-transform duration-200 hover:-translate-y-1"
-                    style={{ left: p.x, top: p.y, width: isCloud ? 660 : NW, height: isCloud ? 120 : NH, transform: active ? "scale(1.04)" : undefined, zIndex: active ? 2 : 1 }}
+                    style={{ left: p.x, top: p.y, width: isCloud ? 660 : (widthOf[s.id] ?? NW), height: isCloud ? 120 : s.id === "data" ? 200 : NH, transform: active ? "scale(1.04)" : undefined, zIndex: active ? 2 : 1 }}
                   >
                     <Sketch fill={s.color} seed={60 + i} roughness={1.2} className="h-full">
                       <div className="p-3.5">
@@ -107,7 +110,7 @@ export function Skills() {
                         <p className="mb-2 text-xs opacity-70">{s.plain}</p>
                         <div className="flex flex-wrap gap-1.5">
                           {s.items.map((it) => (
-                            <Tag key={it}>{it}</Tag>
+                            <TechChip key={it} name={it} />
                           ))}
                         </div>
                       </div>
@@ -130,7 +133,7 @@ export function Skills() {
                     <p className="mb-2 text-xs opacity-70">{s.plain}</p>
                     <div className="flex flex-wrap gap-1.5">
                       {s.items.map((it) => (
-                        <Tag key={it}>{it}</Tag>
+                        <TechChip key={it} name={it} />
                       ))}
                     </div>
                   </div>
