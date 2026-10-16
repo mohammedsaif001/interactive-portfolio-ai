@@ -103,7 +103,7 @@ body {
   border-right: 2px dashed color-mix(in srgb, var(--ink) 25%, transparent);
 }
 
-.sticky {
+.sticky-note {
   box-shadow: 3px 5px 0 var(--shadow);
 }
 
@@ -148,10 +148,10 @@ a[href]:hover > svg {
 }
 
 /* sticky notes straighten up and lift when hovered */
-.sticky {
+.sticky-note {
   transition: rotate 0.25s ease, scale 0.25s ease, translate 0.25s ease;
 }
-.sticky:hover {
+.sticky-note:hover {
   rotate: 0deg;
   scale: 1.03;
   translate: 0 -3px;
