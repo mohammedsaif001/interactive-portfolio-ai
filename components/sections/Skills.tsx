@@ -5,10 +5,11 @@ import { Cloud, Cpu, Database, Monitor, Server, Sparkles, type LucideIcon } from
 import { profile, type SkillGroup } from "@/data/profile";
 import { Sketch, SectionTitle, Tag } from "@/components/ui/Sketch";
 
+// Logical size of the diagram in px. It is drawn at this size and scaled to fit its container.
 const W = 700;
 const H = 580;
 const NW = 190;
-const NH = 176;
+const NH = 176; // tall enough for a title, a caption and up to three rows of tags
 
 const icons: Record<SkillGroup["id"], LucideIcon> = { frontend: Monitor, backend: Server, genai: Sparkles, data: Database, cloud: Cloud };
 
@@ -30,6 +31,7 @@ const flows = [
   { id: "f5", d: "M467 416 L467 444" },
 ];
 
+/** Tracks an element's width so the diagram can scale, or fall back to a list, as the frame is resized. */
 function useWidth() {
   const ref = useRef<HTMLDivElement>(null);
   const [w, setW] = useState(0);
@@ -48,6 +50,7 @@ export function Skills() {
   const [ref, width] = useWidth();
   const [sel, setSel] = useState<SkillGroup["id"]>("genai");
   const group = profile.skills.find((s) => s.id === sel)!;
+  // Below ~560px the diagram would shrink to unreadable text, so show a stacked flow instead.
   const wide = width >= 560;
   const scale = Math.min(1, width / W);
 
@@ -58,7 +61,7 @@ export function Skills() {
       </SectionTitle>
       <p className="-mt-2 mb-5 text-sm text-muted">My toolkit, drawn as the system I usually build. Tap a block to see what I&apos;ve built with it.</p>
 
-      <div ref={ref} className="nopan">
+      <div ref={ref} className="nopan nodrag">
         {wide ? (
           <div style={{ width: W * scale, height: H * scale }}>
             <div className="relative origin-top-left" style={{ width: W, height: H, transform: `scale(${scale})` }}>

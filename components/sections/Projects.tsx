@@ -20,7 +20,8 @@ export function Projects() {
         Things I&apos;ve built
       </SectionTitle>
       <p className="-mt-2 mb-4 text-sm text-muted">Tap a project for the full case study.</p>
-      <div className="nopan space-y-5">
+      {/* nopan/nodrag: pointer gestures here belong to the project cards, not the whiteboard */}
+      <div className="nopan nodrag space-y-5">
         {profile.projects.map((p, i) => (
           <Sketch key={p.title} as="button" onClick={() => setOpen(p)} fill={p.color} seed={40 + i} roughness={1.1} className="group block w-full cursor-pointer text-left transition hover:-translate-y-1 hover:rotate-[-0.4deg]">
             <div className="p-4">
@@ -44,7 +45,9 @@ export function Projects() {
   );
 }
 
+/** Modal with the full write-up for one project. Closes on backdrop click, the X button or Escape. */
 function CaseStudy({ project, onClose }: { project: Project | null; onClose: () => void }) {
+  // false on the server and true in the browser, so the portal never renders during SSR
   const mounted = useSyncExternalStore(
     () => () => {},
     () => true,
