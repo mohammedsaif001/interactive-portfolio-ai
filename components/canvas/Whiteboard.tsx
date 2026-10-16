@@ -11,9 +11,11 @@ import {
   Handle,
   MarkerType,
   MiniMap,
+  NodeResizeControl,
   Position,
   ReactFlow,
   ReactFlowProvider,
+  useNodesState,
   useReactFlow,
   type Edge,
   type EdgeProps,
@@ -21,9 +23,11 @@ import {
   type NodeProps,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { LayoutList } from "lucide-react";
+import { motion } from "framer-motion";
+import { GripVertical, LayoutList, RotateCcw } from "lucide-react";
 import { profile, sections, type SectionId } from "@/data/profile";
 import { ThemeToggle } from "@/lib/theme";
+import { sectionIcons } from "@/lib/sectionIcons";
 import { Intro } from "@/components/sections/Intro";
 import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
@@ -49,7 +53,16 @@ const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1
 // A node is one whiteboard "frame". Hidden handles on every side let edges attach anywhere.
 function FrameNode({ data }: NodeProps<Node<{ id: SectionId }>>) {
   return (
-    <div className="pointer-events-auto" style={{ width: widths[data.id] }}>
+    // pointer-events-auto: React Flow can mark nodes as inert, which would make every button and link
+    // inside a frame unclickable. `group` lets the resize handle fade in on hover.
+    <div className="group pointer-events-auto w-full cursor-grab active:cursor-grabbing">
+      {/* Right-edge handle. Horizontal only, because height must follow the content. nodrag/nopan keep
+          the gesture from also dragging the frame or panning the board. */}
+      <NodeResizeControl position="right" resizeDirection="horizontal" minWidth={420} maxWidth={1300} className="nodrag nopan" style={{ background: "transparent", border: "none", width: 22, height: "100%", right: -11, cursor: "ew-resize", zIndex: 6 }}>
+        <span className="absolute left-1/2 top-1/2 grid h-12 w-5 opacity-0 transition-opacity group-hover:opacity-100 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-ink bg-card shadow-[2px_2px_0_var(--shadow)]" title="Drag to resize">
+          <GripVertical size={14} aria-hidden />
+        </span>
+      </NodeResizeControl>
       <Handle id="tl" type="target" position={Position.Left} style={hidden} />
       <Handle id="tt" type="target" position={Position.Top} style={hidden} />
       <Handle id="tr" type="target" position={Position.Right} style={hidden} />
@@ -75,8 +88,10 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
       ))}
       {label && (
         <EdgeLabelRenderer>
+          {/* z-[5]: labels sit at the middle of each connector and must paint above the cards,
+              otherwise a short connector leaves its label half hidden behind a frame. */}
           <div
-            className="nodrag nopan font-hand pointer-events-none absolute -rotate-3 whitespace-nowrap rounded-full border-2 border-ink bg-card px-3 py-0.5 text-2xl font-bold shadow-[2px_2px_0_var(--shadow)]"
+            className="nodrag nopan font-hand pointer-events-none absolute z-[5] -rotate-3 whitespace-nowrap rounded-full border-2 border-ink bg-card px-3 py-0.5 text-2xl font-bold shadow-[2px_2px_0_var(--shadow)]"
             style={{ transform: `translate(-50%, -50%) translate(${lx}px, ${ly}px) rotate(-3deg)` }}
           >
             {label}
@@ -90,24 +105,26 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
 const nodeTypes = { frame: FrameNode };
 const edgeTypes = { flow: FlowEdge };
 
+// Gaps between frames are kept around 240px so connector labels stay clear of the cards.
 // Reading path snakes: intro -> experience -> projects, down to kind words, left to skills, left to contact.
 const positions: Record<SectionId, { x: number; y: number }> = {
   intro: { x: 0, y: 0 },
-  experience: { x: 880, y: -110 },
-  projects: { x: 1560, y: -110 },
-  recs: { x: 1590, y: 920 },
-  skills: { x: 730, y: 800 },
-  contact: { x: 0, y: 760 },
+  experience: { x: 980, y: -110 },
+  projects: { x: 1780, y: -110 },
+  recs: { x: 1810, y: 940 },
+  skills: { x: 790, y: 820 },
+  contact: { x: -30, y: 780 },
 };
 
-const nodes: Node[] = sections.map((s) => ({
+// Frames start at a fixed width (so the resizer can change it) but never get a fixed height:
+// the content decides how tall each frame is. initialHeight only helps the minimap draw frames.
+const initialNodes: Node[] = sections.map((s) => ({
   id: s.id,
   type: "frame",
   position: positions[s.id],
   data: { id: s.id },
-  initialWidth: widths[s.id],
+  width: widths[s.id],
   initialHeight: heights[s.id],
-  draggable: false,
   selectable: false,
 }));
 
@@ -135,6 +152,7 @@ const miniColors = ["var(--yellow)", "var(--blue)", "var(--coral)", "var(--green
 
 function Board({ onOverview }: { onOverview: () => void }) {
   const rf = useReactFlow();
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [active, setActive] = useState<SectionId>("intro");
 
   const flyTo = useCallback(
@@ -144,6 +162,12 @@ function Board({ onOverview }: { onOverview: () => void }) {
     },
     [rf],
   );
+
+  // Put every frame back in its default place and re-frame the whole board.
+  const resetLayout = useCallback(() => {
+    setNodes(initialNodes);
+    setTimeout(() => rf.fitView({ duration: 800, padding: 0.1 }), 60);
+  }, [rf, setNodes]);
 
   // fit the intro once the nodes have been measured
   useEffect(() => {
@@ -155,12 +179,15 @@ function Board({ onOverview }: { onOverview: () => void }) {
     <div className="fixed inset-0">
       <ReactFlow
         nodes={nodes}
+        onNodesChange={onNodesChange}
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         minZoom={0.15}
         maxZoom={1.6}
-        nodesDraggable={false}
+        nodesDraggable
+        /* ignore tiny movements so a click on a card is never mistaken for a drag */
+        nodeDragThreshold={4}
         nodesConnectable={false}
         elementsSelectable={false}
         panOnScroll
@@ -198,9 +225,18 @@ function Board({ onOverview }: { onOverview: () => void }) {
               key={s.id}
               onClick={() => flyTo(s.id)}
               aria-current={active === s.id}
-              className={`rounded-full border-2 border-ink px-4 py-1.5 text-sm font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5 ${active === s.id ? "bg-sun" : "bg-card"}`}
+              className={`relative flex items-center gap-1.5 rounded-full border-2 border-ink px-3.5 py-1.5 text-sm font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5 ${active === s.id ? "bg-sun" : "bg-card"}`}
             >
+              {(() => {
+                const Icon = sectionIcons[s.id];
+                return <Icon size={15} aria-hidden />;
+              })()}
               {s.label}
+              {active === s.id && (
+                <motion.svg layoutId="nav-squiggle" aria-hidden viewBox="0 0 60 8" className="wobble pointer-events-none absolute -bottom-2.5 left-1/2 h-2 w-14 -translate-x-1/2 text-accent" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M2 4c5-5 8 5 14 0s8 5 14 0 8 5 14 0 8 3 14 0" />
+                </motion.svg>
+              )}
             </button>
           ))}
         </nav>
@@ -216,9 +252,14 @@ function Board({ onOverview }: { onOverview: () => void }) {
         </div>
       </header>
 
-      <p className="pointer-events-none absolute bottom-4 left-1/2 hidden -translate-x-1/2 rounded-full border-2 border-ink bg-card px-4 py-1 text-xs font-semibold shadow-[2px_2px_0_var(--shadow)] md:block">
-        Drag or scroll to move · Ctrl + scroll to zoom
-      </p>
+      <div className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 items-center gap-2 md:flex">
+        <p className="pointer-events-none rounded-full border-2 border-ink bg-card px-4 py-1 text-xs font-semibold shadow-[2px_2px_0_var(--shadow)]">
+          Drag frames to rearrange · drag a right edge to resize · Ctrl + scroll to zoom
+        </p>
+        <button onClick={resetLayout} className="flex items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3 py-1 text-xs font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
+          <RotateCcw size={13} aria-hidden /> Reset layout
+        </button>
+      </div>
     </div>
   );
 }
