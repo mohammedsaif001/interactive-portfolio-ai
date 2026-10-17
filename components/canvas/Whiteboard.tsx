@@ -27,8 +27,10 @@ import { motion } from "framer-motion";
 import { GripVertical, LayoutList, RotateCcw } from "lucide-react";
 import { profile, sections, type SectionId } from "@/data/profile";
 import { ThemeToggle } from "@/lib/theme";
+import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
 import { sectionIcons } from "@/lib/sectionIcons";
 import { Intro } from "@/components/sections/Intro";
+import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
 import { Projects } from "@/components/sections/Projects";
 import { Recommendations } from "@/components/sections/Recommendations";
@@ -37,6 +39,7 @@ import { Contact } from "@/components/sections/Contact";
 
 const content: Record<SectionId, ReactNode> = {
   intro: <Intro />,
+  about: <About />,
   experience: <Experience />,
   projects: <Projects />,
   recs: <Recommendations />,
@@ -44,9 +47,9 @@ const content: Record<SectionId, ReactNode> = {
   contact: <Contact />,
 };
 
-const widths: Record<SectionId, number> = { intro: 720, experience: 540, projects: 520, recs: 460, skills: 760, contact: 560 };
+const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 520, recs: 460, skills: 760, contact: 560 };
 // Approximate rendered heights, only so the minimap can draw frames; real sizes are measured by React Flow.
-const heights: Record<SectionId, number> = { intro: 470, experience: 700, projects: 660, recs: 581, skills: 780, contact: 297 };
+const heights: Record<SectionId, number> = { intro: 520, about: 430, experience: 600, projects: 660, recs: 581, skills: 1010, contact: 297 };
 
 const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1 };
 
@@ -91,7 +94,7 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
           {/* z-[5]: labels sit at the middle of each connector and must paint above the cards,
               otherwise a short connector leaves its label half hidden behind a frame. */}
           <div
-            className="nodrag nopan font-hand pointer-events-none absolute z-[5] -rotate-3 whitespace-nowrap rounded-full border-2 border-ink bg-card px-3 py-0.5 text-2xl font-bold shadow-[2px_2px_0_var(--shadow)]"
+            className="nodrag nopan font-hand pointer-events-none absolute z-[5] whitespace-nowrap rounded-full border-2 border-ink bg-card px-3 py-0.5 text-2xl font-bold shadow-[2px_2px_0_var(--shadow)]"
             style={{ transform: `translate(-50%, -50%) translate(${lx}px, ${ly}px) rotate(-3deg)` }}
           >
             {label}
@@ -105,15 +108,17 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
 const nodeTypes = { frame: FrameNode };
 const edgeTypes = { flow: FlowEdge };
 
-// Gaps between frames are kept around 240px so connector labels stay clear of the cards.
-// Reading path snakes: intro -> experience -> projects, down to kind words, left to skills, left to contact.
+// Gaps between frames are kept around 240px so connector labels stay clear of the cards, and the
+// second row starts well below the tallest frame in the first row (experience) so nothing overlaps.
+// Reading path snakes: intro -> story -> experience -> projects, down to kind words, left to skills, left to contact.
 const positions: Record<SectionId, { x: number; y: number }> = {
   intro: { x: 0, y: 0 },
-  experience: { x: 980, y: -110 },
-  projects: { x: 1780, y: -110 },
-  recs: { x: 1810, y: 940 },
-  skills: { x: 790, y: 820 },
-  contact: { x: -30, y: 780 },
+  about: { x: 960, y: -60 },
+  experience: { x: 1720, y: -110 },
+  projects: { x: 2500, y: -110 },
+  recs: { x: 2530, y: 900 },
+  skills: { x: 1530, y: 860 },
+  contact: { x: 730, y: 920 },
 };
 
 // Frames start at a fixed width (so the resizer can change it) but never get a fixed height:
@@ -141,7 +146,8 @@ const edge = (id: string, source: SectionId, sh: string, target: SectionId, th: 
 });
 
 const edges: Edge[] = [
-  edge("e1", "intro", "sr", "experience", "tl", "my story"),
+  edge("e1", "intro", "sr", "about", "tl", "about me"),
+  edge("e1b", "about", "sr", "experience", "tl", "my work"),
   edge("e2", "experience", "sr", "projects", "tl", "what I built"),
   edge("e3", "projects", "sb", "recs", "tt", "what people say"),
   edge("e4", "recs", "sl", "skills", "tr", "how I do it"),
@@ -214,9 +220,12 @@ function Board({ onOverview }: { onOverview: () => void }) {
 
       {/* top bar */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-4">
-        <div className="pointer-events-auto rounded-xl border-2 border-ink bg-card px-4 py-2 shadow-[3px_3px_0_var(--shadow)]">
-          <p className="glow font-hand text-2xl font-bold leading-none">{profile.name}</p>
-          <p className="text-xs text-muted">{profile.role}</p>
+        <div className="pointer-events-auto flex items-center gap-3 rounded-2xl border-2 border-ink bg-card py-2 pl-2.5 pr-4 shadow-[3px_3px_0_var(--shadow)]">
+          <DoodleAvatar size={52} />
+          <div>
+            <p className="glow font-hand text-2xl font-bold leading-none">{profile.name}</p>
+            <p className="text-xs text-muted">{profile.role}</p>
+          </div>
         </div>
 
         <nav aria-label="Sections" className="pointer-events-auto hidden flex-wrap justify-center gap-2 lg:flex">

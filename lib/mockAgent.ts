@@ -16,7 +16,7 @@ export function mockReply(input: string): string {
   if (/(genai|\bai\b|llm|rag|agent)/.test(q))
     return `He builds GenAI features end to end: ${profile.projects[0].title} (${profile.projects[0].impact}) and ${profile.projects[1].title}. Stack: LLM APIs, RAG, agents and evals.`;
   if (/(fit|senior|role|full)/.test(q))
-    return `${profile.name} has ${profile.years} years of experience across frontend, backend and cloud, and currently works as a ${profile.role}. ${profile.availability}.`;
+    return `${profile.name} has been building software since ${profile.since}, across frontend, backend and cloud, and currently works as a ${profile.role}. ${profile.availability}.`;
   if (/(experience|work|career|history|summar)/.test(q))
     return profile.experience.map((j) => `${j.role}, ${j.company} (${j.period}): ${j.plain}`).join("\n");
   if (/(skill|stack|tech)/.test(q))

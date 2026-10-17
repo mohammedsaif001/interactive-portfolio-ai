@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Compass, LayoutList } from "lucide-react";
 import { profile } from "@/data/profile";
 import { Sketch } from "@/components/ui/Sketch";
+import { ProfilePhoto } from "@/components/ui/ProfilePhoto";
 import { Typewriter } from "@/components/ui/Motion";
 import { ThemeToggle } from "@/lib/theme";
 import { BigScreenNotice } from "@/components/ui/BigScreenNotice";
@@ -88,6 +89,9 @@ export function EntryScreen({ onExplore, onOverview, isDesktop }: Props) {
           </motion.section>
         ) : (
           <motion.section key="ready" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }} className="w-full max-w-2xl text-center">
+            <motion.div initial={{ y: -16, opacity: 0, scale: 0.9 }} animate={{ y: 0, opacity: 1, scale: 1 }} transition={{ type: "spring", damping: 14, delay: 0.05 }} className="mb-6 flex justify-center">
+              <ProfilePhoto size="md" />
+            </motion.div>
             <motion.p initial={{ y: 12, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.1 }} className="font-hand text-3xl text-muted">
               Welcome to my whiteboard
             </motion.p>
@@ -117,14 +121,14 @@ export function EntryScreen({ onExplore, onOverview, isDesktop }: Props) {
                 <Sketch fill="yellow" seed={91} className="p-5">
                   <Compass size={28} aria-hidden />
                   <p className="font-hand mt-2 text-3xl font-bold leading-none">{isDesktop ? "Explore the whiteboard" : "Continue on mobile"}</p>
-                  <p className="mt-1 text-sm">{isDesktop ? "Pan around my story, projects and skills." : "Scroll through my story, projects and skills."}</p>
+                  <p className="mt-1 text-sm">{isDesktop ? "Pan around my work, projects and skills." : "Scroll through my work, projects and skills."}</p>
                 </Sketch>
               </button>
               <button onClick={onOverview} className="text-left transition hover:-translate-y-1">
                 <Sketch fill="green" seed={92} className="p-5">
                   <LayoutList size={28} aria-hidden />
                   <p className="font-hand mt-2 text-3xl font-bold leading-none">Quick overview</p>
-                  <p className="mt-1 text-sm">Short on time? Everything on one simple page, plus my resume.</p>
+                  <p className="mt-1 text-sm">Short on time? Everything on one simple page.</p>
                 </Sketch>
               </button>
             </motion.div>

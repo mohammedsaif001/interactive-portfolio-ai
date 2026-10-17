@@ -1,11 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { BadgeCheck, Brain, Code2, MapPin, Rocket, UserRound } from "lucide-react";
+import { Brain, Code2, MapPin, Rocket, UserRound } from "lucide-react";
 import { profile } from "@/data/profile";
 import { Sketch } from "@/components/ui/Sketch";
 import { FloatIcon } from "@/components/ui/Doodles";
-import { CountUp, Typewriter } from "@/components/ui/Motion";
+import { Typewriter } from "@/components/ui/Motion";
+import { TechChip } from "@/components/ui/TechChip";
+import { ProfilePhoto } from "@/components/ui/ProfilePhoto";
 import { SocialLinks } from "./SocialLinks";
 
 function Sparkle({ className, size = 28 }: { className: string; size?: number }) {
@@ -25,17 +27,7 @@ export function Intro() {
       <Sparkle className="-left-4 bottom-28 text-accent" size={22} />
 
       <div className="flex flex-col items-center gap-6 sm:flex-row sm:items-start">
-        <div className="relative shrink-0 -rotate-3">
-          <span className="tape -top-3 left-1/2 -translate-x-1/2 rotate-2" />
-          <div className="border-2 border-ink bg-white p-2 pb-8 shadow-[4px_4px_0_var(--shadow)]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/avatar.svg" alt={`${profile.name}, profile photo`} width={150} height={150} className="block h-[150px] w-[150px] object-cover" />
-          </div>
-          <span className="font-hand absolute bottom-1 left-0 right-0 text-center text-xl text-[#1f2430]">that&apos;s me!</span>
-          <span aria-hidden className="absolute -bottom-3 -right-3 grid h-9 w-9 place-items-center rounded-full border-2 border-ink bg-mint shadow-[2px_2px_0_var(--shadow)]">
-            <BadgeCheck size={20} />
-          </span>
-        </div>
+        <ProfilePhoto size="lg" />
 
         <div className="text-center sm:text-left">
           <p className="font-hand flex items-center justify-center gap-2 text-2xl text-muted sm:justify-start">
@@ -81,17 +73,17 @@ export function Intro() {
         </div>
       </div>
 
-      <dl className="mt-6 grid grid-cols-2 gap-3 border-t-2 border-dashed border-ink/40 pt-5 sm:grid-cols-4">
-        {profile.stats.map((s) => (
-          <div key={s.label} className="text-center">
-            <dt className="sr-only">{s.label}</dt>
-            <dd className="glow font-hand text-5xl font-bold leading-none">
-              <CountUp value={s.value} suffix={s.suffix} />
-            </dd>
-            <p className="mt-1 text-xs font-medium leading-tight text-muted">{s.label}</p>
-          </div>
-        ))}
-      </dl>
+      <div className="mt-6 border-t-2 border-dashed border-ink/40 pt-4">
+        <p className="font-hand text-2xl leading-none text-muted">I work with</p>
+        <ul className="mt-2 flex flex-wrap gap-2">
+          {/* every skill from the skills data, so this row can never drift from the Skills frame */}
+          {[...new Set(profile.skills.flatMap((g) => g.items))].map((t) => (
+            <li key={t}>
+              <TechChip name={t} />
+            </li>
+          ))}
+        </ul>
+      </div>
     </Sketch>
   );
 }
