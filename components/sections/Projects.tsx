@@ -100,7 +100,7 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               </button>
             </div>
 
-            <dl className="mt-6 grid gap-3 sm:grid-cols-3">
+            <dl className="mt-6 grid gap-3 sm:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" style={{ "--n": project.metrics.length } as React.CSSProperties}>
               {project.metrics.map((m) => (
                 <div key={m.label} className="rounded-xl border-2 border-ink p-4 text-center" style={{ background: `var(--${project.color})` }}>
                   <dd className="glow font-hand text-5xl font-bold leading-none">
@@ -140,9 +140,11 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
                   <Tag key={t}>{t}</Tag>
                 ))}
               </div>
-              <a href={project.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
+              {project.href && (
+                <a href={project.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
                 View project <ExternalLink size={15} aria-hidden />
               </a>
+              )}
             </div>
           </motion.article>
         </motion.div>
