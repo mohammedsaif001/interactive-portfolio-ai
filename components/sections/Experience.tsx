@@ -4,10 +4,9 @@ import { motion } from "framer-motion";
 import { Briefcase, Trophy } from "lucide-react";
 import { profile } from "@/data/profile";
 import { Sketch, SectionTitle } from "@/components/ui/Sketch";
-import { CountUp } from "@/components/ui/Motion";
 import { FloatIcon } from "@/components/ui/Doodles";
 
-export function Experience() {
+export function Experience({ showPlain = false }: { showPlain?: boolean }) {
   return (
     <Sketch seed={21} className="p-6 sm:p-8">
       <FloatIcon icon={Trophy} color="coral" className="-right-5 -top-5" rotate={10} />
@@ -33,13 +32,8 @@ export function Experience() {
                 <h3 className="text-lg font-bold leading-tight">{job.role}</h3>
                 <p className="font-semibold text-muted">{job.company}</p>
               </div>
-              <div className="shrink-0 rotate-2 rounded-lg border-2 border-ink px-2.5 py-1 text-center" style={{ background: "var(--yellow)" }}>
-                <p className="font-hand text-3xl font-bold leading-none">
-                  <CountUp value={job.stat.value} suffix={job.stat.suffix} />
-                </p>
-                <p className="text-[10px] font-semibold leading-tight">{job.stat.label}</p>
-              </div>
             </div>
+            {showPlain && <p className="mt-1 text-sm italic text-muted">{job.plain}</p>}
             <ul className="mt-2 space-y-1 text-sm leading-relaxed">
               {job.points.map((p) => (
                 <li key={p} className="flex gap-2">
