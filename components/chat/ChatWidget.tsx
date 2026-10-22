@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { MessageCircle, Send, X } from "lucide-react";
 import { profile } from "@/data/profile";
+import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
 import { mockReply, suggestedPrompts } from "@/lib/mockAgent";
 
 type Msg = { role: "user" | "bot"; text: string };
@@ -45,9 +46,12 @@ export function ChatWidget() {
           className="mb-3 flex h-[min(520px,70dvh)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-[5px_5px_0_var(--shadow)]"
         >
           <header className="flex items-center justify-between border-b-2 border-ink bg-sun px-4 py-2.5">
-            <div>
-              <p className="font-hand text-2xl font-bold leading-none">Ask about {profile.name.split(" ")[0]}</p>
-              <p className="text-[11px]">AI assistant · preview mode</p>
+            <div className="flex items-center gap-2.5">
+              <DoodleAvatar size={38} />
+              <div>
+                <p className="font-hand text-2xl font-bold leading-none">Ask about {profile.name.split(" ")[0]}</p>
+                <p className="text-[11px]">AI assistant · preview mode</p>
+              </div>
             </div>
             <button onClick={() => setOpen(false)} aria-label="Close chat" className="rounded-md p-1 hover:bg-ink/10">
               <X size={18} />
