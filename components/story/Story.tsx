@@ -5,7 +5,6 @@ import { LayoutList } from "lucide-react";
 import { profile, sections, type SectionId } from "@/data/profile";
 import { DownArrow } from "@/components/ui/Sketch";
 import { ThemeToggle } from "@/lib/theme";
-import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
 import { sectionIcons } from "@/lib/sectionIcons";
 import { BigScreenNotice } from "@/components/ui/BigScreenNotice";
 import { Intro } from "@/components/sections/Intro";
@@ -32,15 +31,14 @@ export function Story({ onOverview }: { onOverview: () => void }) {
   return (
     <div className="min-h-dvh overflow-x-clip pb-28">
       <header className="sticky top-0 z-20 border-b-2 border-ink bg-paper/95 backdrop-blur">
-        <div className="flex items-center justify-between gap-2 px-4 py-2.5">
-          <DoodleAvatar size={40} />
-          <p className="font-hand text-2xl font-bold leading-none">{profile.name}</p>
-          <ThemeToggle className="ml-auto !h-8 !w-8" />
+        <div className="flex items-center gap-2.5 px-3.5 py-2.5">
+          <p className="font-hand whitespace-nowrap text-2xl font-bold leading-none">{profile.name}</p>
+          <ThemeToggle className="ml-auto !h-8 !w-8 shrink-0" />
           <button
             onClick={onOverview}
-            className="flex items-center gap-1.5 rounded-lg border-2 border-ink bg-mint px-3 py-1.5 text-xs font-bold shadow-[2px_2px_0_var(--shadow)]"
+            className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-lg border-2 border-ink bg-mint px-2.5 py-1.5 text-xs font-bold shadow-[2px_2px_0_var(--shadow)]"
           >
-            <LayoutList size={14} aria-hidden /> Quick overview
+            <LayoutList size={14} aria-hidden /> Overview
           </button>
         </div>
         <nav aria-label="Sections" className="flex gap-2 overflow-x-auto px-4 pb-2.5 [scrollbar-width:none]">

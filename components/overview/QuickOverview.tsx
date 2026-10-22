@@ -13,7 +13,6 @@ import { Recommendations } from "@/components/sections/Recommendations";
 import { Skills } from "@/components/sections/Skills";
 import { Contact } from "@/components/sections/Contact";
 import { ThemeToggle } from "@/lib/theme";
-import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
 
 // The overview renders the very same sections, in the same order and from the same data, as the
 // whiteboard. It just lays them out as one calm column (plus a plain-English line per job).
@@ -36,12 +35,11 @@ export function QuickOverview({ onBack }: { onBack: () => void }) {
     // and unlike `hidden` it does not create a scroll container, so the sticky header keeps working.
     <div className="min-h-dvh overflow-x-clip pb-28">
       <header className="sticky top-0 z-30 border-b-2 border-ink bg-paper/90 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-2.5">
+        <div className="mx-auto flex max-w-7xl items-center gap-4 px-4 py-2.5">
           <button onClick={onBack} aria-label="Back to the interactive version" className="flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-xl border-2 border-ink bg-card px-3 text-sm font-bold shadow-[3px_3px_0_var(--shadow)]">
             <ArrowLeft size={16} aria-hidden /> <span className="hidden sm:inline">Interactive</span>
           </button>
 
-          <DoodleAvatar size={46} />
           <div className="min-w-0 flex-1 xl:flex-none xl:shrink-0">
             <p className="glow font-hand truncate text-3xl font-bold leading-none">{profile.name}</p>
             <p className="hidden truncate text-xs text-muted sm:block xl:whitespace-nowrap">

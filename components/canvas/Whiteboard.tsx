@@ -27,7 +27,6 @@ import { motion } from "framer-motion";
 import { GripVertical, LayoutList, RotateCcw } from "lucide-react";
 import { profile, sections, type SectionId } from "@/data/profile";
 import { ThemeToggle } from "@/lib/theme";
-import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
 import { sectionIcons } from "@/lib/sectionIcons";
 import { Intro } from "@/components/sections/Intro";
 import { About } from "@/components/sections/About";
@@ -220,12 +219,9 @@ function Board({ onOverview }: { onOverview: () => void }) {
 
       {/* top bar */}
       <header className="pointer-events-none absolute inset-x-0 top-0 z-10 flex items-start justify-between gap-3 p-4">
-        <div className="pointer-events-auto flex items-center gap-3 rounded-2xl border-2 border-ink bg-card py-2 pl-2.5 pr-4 shadow-[3px_3px_0_var(--shadow)]">
-          <DoodleAvatar size={52} />
-          <div>
-            <p className="glow font-hand text-2xl font-bold leading-none">{profile.name}</p>
-            <p className="text-xs text-muted">{profile.role}</p>
-          </div>
+        <div className="pointer-events-auto rounded-xl border-2 border-ink bg-card px-4 py-2 shadow-[3px_3px_0_var(--shadow)]">
+          <p className="glow font-hand text-2xl font-bold leading-none">{profile.name}</p>
+          <p className="text-xs text-muted">{profile.role}</p>
         </div>
 
         <nav aria-label="Sections" className="pointer-events-auto hidden flex-wrap justify-center gap-2 lg:flex">
