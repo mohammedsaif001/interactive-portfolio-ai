@@ -64,7 +64,7 @@ export function Skills() {
       </SectionTitle>
       <p className="-mt-2 mb-5 text-sm text-muted">My toolkit, drawn as the system I usually build. Tap a block to see what I&apos;ve built with it.</p>
 
-      <div ref={ref} className="nopan nodrag">
+      <div ref={ref}>
         {wide ? (
           <div className="mx-auto" style={{ width: W * scale, height: H * scale }}>
             <div className="relative origin-top-left" style={{ width: W, height: H, transform: `scale(${scale})` }}>

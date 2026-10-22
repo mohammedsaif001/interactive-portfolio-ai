@@ -47,8 +47,8 @@ export function Recommendations() {
         >
           <span className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-ink bg-coral" aria-hidden />
           <Quote size={20} aria-hidden className="mb-1 opacity-60" />
-          {/* nowheel/nodrag/nopan: lets an expanded quote scroll without panning or dragging the board */}
-          <blockquote className={`nowheel nodrag nopan whitespace-pre-line text-[15px] leading-relaxed ${open ? "max-h-72 overflow-y-auto pr-1" : ""}`}>&ldquo;{shown}&rdquo;</blockquote>
+          {/* nowheel: lets an expanded quote scroll without the wheel also panning the board */}
+          <blockquote className={`nowheel whitespace-pre-line text-[15px] leading-relaxed ${open ? "max-h-72 overflow-y-auto pr-1" : ""}`}>&ldquo;{shown}&rdquo;</blockquote>
           {long && (
             <button onClick={() => setOpen((o) => !o)} className="nodrag mt-1 text-xs font-bold underline underline-offset-2">
               {open ? "Show less" : "Read more"}
