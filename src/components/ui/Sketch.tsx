@@ -3,7 +3,7 @@
 import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
 import rough from "roughjs";
 import type { LucideIcon } from "lucide-react";
-import type { Color } from "@/data/profile";
+import type { Color } from "@/data/types";
 import { useTheme } from "@/lib/theme";
 
 export type Fill = Color | "card";

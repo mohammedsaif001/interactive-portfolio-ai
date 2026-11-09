@@ -1,5 +1,5 @@
 import { BookOpen, Briefcase, Cpu, Heart, Rocket, Send, UserRound, type LucideIcon } from "lucide-react";
-import type { SectionId } from "@/data/profile";
+import { type SectionId } from "@/data/sections";
 
 /** One icon per whiteboard section, reused by the nav chips in every view. */
 export const sectionIcons: Record<SectionId, LucideIcon> = {

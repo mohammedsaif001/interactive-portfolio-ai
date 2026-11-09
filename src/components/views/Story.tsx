@@ -2,7 +2,8 @@
 
 import { Fragment, useState, type ReactNode } from "react";
 import { LayoutList } from "lucide-react";
-import { profile, sections, type SectionId } from "@/data/profile";
+import { profile } from "@/data/profile";
+import { sections, type SectionId } from "@/data/sections";
 import { DownArrow } from "@/components/ui/Sketch";
 import { ThemeToggle } from "@/lib/theme";
 import { sectionIcons } from "@/lib/sectionIcons";

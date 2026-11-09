@@ -1,40 +1,7 @@
 // ALL portfolio content lives here.
 // Source: Mohammed's LinkedIn profile (scraped 2026-11-09). Items marked TODO still need real input.
 
-export type Color = "yellow" | "coral" | "blue" | "green";
-
-// `id` doubles as the key into lib/techLogos.tsx, so "linkedin" | "github" | "leetcode" get their brand logo.
-export type Social = { id: string; label: string; handle: string; href: string };
-export type Job = {
-  role: string;
-  company: string;
-  period: string;
-  plain: string; // plain-language summary for the recruiter view
-  points: string[];
-};
-export type Metric = { value: number; prefix?: string; suffix?: string; label: string };
-export type Project = {
-  title: string;
-  blurb: string;
-  impact: string;
-  tags: string[];
-  href?: string; // omit for private / employer work: the "View project" button is hidden
-  color: Color;
-  role: string;
-  problem: string;
-  approach: string;
-  architecture: string[]; // left-to-right flow of components
-  metrics: Metric[];
-};
-export type SkillGroup = {
-  id: "frontend" | "backend" | "genai" | "data" | "cloud";
-  title: string;
-  plain: string;
-  items: string[];
-  built: string; // "in practice" sentence shown when a node is selected
-  color: Color;
-};
-export type Recommendation = { quote: string; name: string; title: string; date: string };
+import type { Job, Project, Recommendation, SkillGroup, Social } from "./types";
 
 export const profile = {
   name: "Mohammed Saif",
@@ -154,15 +121,3 @@ export const profile = {
     { quote: "Having observed Mohammed's work personally, it is remarkable how he efficiently handled the fundraising campaign. By implementing a continuous improvement strategy, he has made his work an example for his colleagues. His work ethic and performance are both exemplary and uplifting for the team he works with.", name: "Himanshu Goenka", title: "President & Founder, Muskurahat Foundation", date: "Apr 2022" },
   ] satisfies Recommendation[],
 };
-
-export const sections = [
-  { id: "intro", label: "Hello" },
-  { id: "about", label: "About me" },
-  { id: "experience", label: "Experience" },
-  { id: "projects", label: "Projects" },
-  { id: "recs", label: "Kind words" },
-  { id: "skills", label: "Skills" },
-  { id: "contact", label: "Contact" },
-] as const;
-
-export type SectionId = (typeof sections)[number]["id"];

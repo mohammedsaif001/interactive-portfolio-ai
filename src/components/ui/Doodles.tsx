@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
-import type { Color } from "@/data/profile";
+import type { Color } from "@/data/types";
 
 /** A round, bordered icon sticker that bobs gently. Position it with className. */
 export function FloatIcon({ icon: Icon, className = "", color = "yellow", rotate = -8, size = 22 }: { icon: LucideIcon; className?: string; color?: Color; rotate?: number; size?: number }) {
