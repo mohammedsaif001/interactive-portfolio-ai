@@ -39,7 +39,7 @@ export function QuickOverview({ onBack }: { onBack: () => void }) {
           </button>
 
           <div className="min-w-0 flex-1 xl:flex-none xl:shrink-0">
-            <p className="glow font-hand truncate text-3xl font-bold leading-none">{profile.name}</p>
+            <p className="glow font-hand whitespace-nowrap pr-1.5 text-3xl font-bold leading-none">{profile.name}</p>
             <p className="hidden truncate text-xs text-muted sm:block xl:whitespace-nowrap">
               {profile.role} · Quick overview
             </p>
