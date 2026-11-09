@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, useState, type ReactNode } from "react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -175,17 +175,16 @@ function Board({ onOverview }: { onOverview: () => void }) {
     setTimeout(() => rf.fitView({ duration: 800, padding: 0.1 }), 60);
   }, [rf, setNodes]);
 
-  // fit the intro once the nodes have been measured
-  useEffect(() => {
-    const t = setTimeout(() => rf.fitView({ nodes: [{ id: "intro" }], duration: 0, padding: 0.3, maxZoom: 1 }), 80);
-    return () => clearTimeout(t);
-  }, [rf]);
-
   return (
     <div className="fixed inset-0">
       <ReactFlow
         nodes={nodes}
         onNodesChange={onNodesChange}
+        /* React Flow frames the Hello card itself as soon as the nodes are measured, before the first
+           paint. (A delayed fitView call used to run after the board was visible, so the card
+           appeared on the left and then jumped to the middle.) */
+        fitView
+        fitViewOptions={{ nodes: [{ id: "intro" }], padding: 0.3, maxZoom: 1 }}
         edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
