@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { motion } from "framer-motion";
 import { MessageCircle, Send, X } from "lucide-react";
 import { profile } from "@/data/profile";
 import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
@@ -21,6 +22,21 @@ export function ChatWidget() {
     endRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [msgs, busy, open]);
 
+  // While the chat is open: Escape closes it, and on a phone the page behind it stops scrolling.
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    const phone = window.matchMedia("(max-width: 639px)").matches;
+    const html = document.documentElement;
+    const prevOverflow = html.style.overflow;
+    if (phone) html.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      html.style.overflow = prevOverflow;
+    };
+  }, [open]);
+
   const send = (text: string) => {
     const t = text.trim();
     if (!t || busy) return;
@@ -39,11 +55,19 @@ export function ChatWidget() {
   };
 
   return (
+    <>
+      {/* Phones only: dim and blur the page so the chat reads as its own layer. Tap it to close. */}
+      {open && <div aria-hidden onClick={() => setOpen(false)} className="fixed inset-0 z-40 bg-black/55 backdrop-blur-[3px] sm:hidden" />}
+
     <div className="fixed bottom-4 right-4 z-50">
       {open && (
-        <section
+        <motion.section
+          initial={{ y: 28, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.22, ease: "easeOut" }}
           aria-label="Ask about me"
-          className="mb-3 flex h-[min(520px,70dvh)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-[5px_5px_0_var(--shadow)]"
+          // phone: a bottom sheet across the full width; sm and up: the small floating panel
+          className="mb-3 flex h-[min(520px,70dvh)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-[5px_5px_0_var(--shadow)] max-sm:fixed max-sm:inset-x-0 max-sm:bottom-0 max-sm:mb-0 max-sm:h-[82dvh] max-sm:w-auto max-sm:rounded-b-none max-sm:rounded-t-3xl max-sm:border-x-0 max-sm:border-b-0 max-sm:shadow-[0_-6px_0_var(--shadow)]"
         >
           <header className="flex items-center justify-between border-b-2 border-ink bg-sun px-4 py-2.5">
             <div className="flex items-center gap-2.5">
@@ -99,17 +123,18 @@ export function ChatWidget() {
               <Send size={16} />
             </button>
           </form>
-        </section>
+        </motion.section>
       )}
 
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Ask me anything"}
-        className="ml-auto flex items-center gap-2 rounded-full border-2 border-ink bg-coral p-3 font-bold shadow-[4px_4px_0_var(--shadow)] sm:px-4 transition hover:-translate-y-0.5"
+        className={`ml-auto flex items-center gap-2 rounded-full border-2 border-ink bg-coral p-3 font-bold shadow-[4px_4px_0_var(--shadow)] sm:px-4 transition hover:-translate-y-0.5 ${open ? "max-sm:hidden" : ""}`}
       >
         <MessageCircle size={20} aria-hidden />
         <span className="font-hand hidden text-xl leading-none sm:inline">Ask me anything</span>
       </button>
     </div>
+    </>
   );
 }
