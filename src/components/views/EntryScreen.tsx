@@ -19,9 +19,9 @@ const BOOT = [
   { text: "waking up the AI agent .... online" },
 ];
 
-type Props = { onExplore: () => void; onOverview: () => void; isDesktop: boolean };
+type Props = { onExplore: () => void; onOverview: () => void; isDesktop: boolean; onReady?: () => void };
 
-export function EntryScreen({ onExplore, onOverview, isDesktop }: Props) {
+export function EntryScreen({ onExplore, onOverview, isDesktop, onReady }: Props) {
   const [booted, setPhase] = useState<"boot" | "ready">("boot");
   const [lines, setLines] = useState(0);
   const reduced = useSyncExternalStore(
@@ -41,6 +41,11 @@ export function EntryScreen({ onExplore, onOverview, isDesktop }: Props) {
     const id = setInterval(() => setLines((n) => n + 1), 480);
     return () => clearInterval(id);
   }, [reduced]);
+
+  // Tell the parent when the choice screen is showing, so it can quietly build the whiteboard behind it.
+  useEffect(() => {
+    if (phase === "ready") onReady?.();
+  }, [phase, onReady]);
 
   useEffect(() => {
     if (phase === "boot" && lines > BOOT.length) {
