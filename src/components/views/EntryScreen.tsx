@@ -139,13 +139,15 @@ export function EntryScreen({ onExplore, onOverview, isDesktop, onReady }: Props
                   <p className="mt-1 text-sm">{isDesktop ? "Pan around my work, projects and skills." : "Scroll through my work, projects and skills."}</p>
                 </Sketch>
               </button>
-              <button onClick={onOverview} className="text-left transition hover:-translate-y-1">
-                <Sketch fill="green" seed={92} className="p-5">
-                  <LayoutList size={28} aria-hidden />
-                  <p className="font-hand mt-2 text-3xl font-bold leading-none">Quick overview</p>
-                  <p className="mt-1 text-sm">Short on time? Everything on one simple page.</p>
-                </Sketch>
-              </button>
+              {isDesktop && (
+                <button onClick={onOverview} className="text-left transition hover:-translate-y-1">
+                  <Sketch fill="green" seed={92} className="p-5">
+                    <LayoutList size={28} aria-hidden />
+                    <p className="font-hand mt-2 text-3xl font-bold leading-none">Quick overview</p>
+                    <p className="mt-1 text-sm">Short on time? Everything on one simple page.</p>
+                  </Sketch>
+                </button>
+              )}
             </motion.div>
           </motion.section>
         )}

@@ -66,8 +66,10 @@ export function PortfolioApp() {
           <Whiteboard onOverview={() => setView("overview")} />
         </div>
       )}
-      {view === "explore" && !isDesktop && <Story onOverview={() => setView("overview")} />}
-      {view === "overview" && <QuickOverview onBack={() => setView("explore")} />}
+      {/* Phones get a single experience (the story). The overview is a desktop alternative to the whiteboard:
+          on a phone it would be the same sections in the same order, so it is not offered there. */}
+      {!isDesktop && view !== "entry" && <Story />}
+      {isDesktop && view === "overview" && <QuickOverview onBack={() => setView("explore")} />}
 
       <ChatWidget />
     </>
