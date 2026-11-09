@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useCallback, useRef, useState, useSyncExternalStore } from "react";
+import { startTransition, useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence } from "framer-motion";
 import { EntryScreen } from "@/components/views/EntryScreen";
 import { Whiteboard } from "@/components/views/Whiteboard";
@@ -37,6 +37,12 @@ export function PortfolioApp() {
     // wait for the entry animations to finish, then render at low priority so nothing stutters
     setTimeout(() => startTransition(() => setWarm(true)), 900);
   }, []);
+
+  // Every screen starts at the top. The page keeps its scroll position when one screen replaces another,
+  // so a visitor who had scrolled down the welcome screen landed halfway down the next one.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [view]);
 
   const showBoard = isDesktop && view === "explore";
   const boardMounted = isDesktop && (warm || view !== "entry");

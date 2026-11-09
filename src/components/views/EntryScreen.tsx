@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Compass, LayoutList } from "lucide-react";
 import { profile } from "@/data/profile";
@@ -41,6 +41,14 @@ export function EntryScreen({ onExplore, onOverview, isDesktop, onReady }: Props
     const id = setInterval(() => setLines((n) => n + 1), 480);
     return () => clearInterval(id);
   }, [reduced]);
+
+  // Keyboard users on a desktop get the main choice focused. `autoFocus` made phones scroll the page down
+  // to the (below-the-fold) button the moment the screen appeared, hiding the welcome heading, so focus
+  // is set by hand without scrolling, and only where the button is already in view.
+  const exploreRef = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    if (phase === "ready" && isDesktop) exploreRef.current?.focus({ preventScroll: true });
+  }, [phase, isDesktop]);
 
   // Tell the parent when the choice screen is showing, so it can quietly build the whiteboard behind it.
   useEffect(() => {
@@ -123,8 +131,8 @@ export function EntryScreen({ onExplore, onOverview, isDesktop, onReady }: Props
               </motion.div>
             )}
 
-            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.75 }} className={`${isDesktop ? "mt-9" : "mt-0"} grid gap-5 sm:grid-cols-2`}>
-              <button onClick={onExplore} autoFocus className="text-left transition hover:-translate-y-1">
+            <motion.div initial={{ y: 24, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.75 }} className={`${isDesktop ? "mt-9 sm:grid-cols-2" : "mt-0"} grid gap-5`}>
+              <button ref={exploreRef} onClick={onExplore} className="text-left transition hover:-translate-y-1">
                 <Sketch fill="yellow" seed={91} className="p-5">
                   <Compass size={28} aria-hidden />
                   <p className="font-hand mt-2 text-3xl font-bold leading-none">{isDesktop ? "Explore the whiteboard" : "Continue on mobile"}</p>
