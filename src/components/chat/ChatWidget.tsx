@@ -56,7 +56,7 @@ export function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const [input, setInput] = useState("");
   const [msgs, setMsgs] = useState<Msg[]>([
-    { role: "bot", text: `Hi! I'm ${profile.name.split(" ")[0]}'s assistant. Ask me anything about his work, skills or availability.`, time: now() },
+    { role: "bot", text: `Hi! I'm ${profile.name.split(" ")[0]}'s assistant. Ask me anything about his work, skills or availability.`, time: "" },
   ]);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -157,7 +157,7 @@ export function ChatWidget() {
                       {m.text}
                     </p>
                     <span className="mt-1 px-1 text-[10px] text-muted">
-                      {user ? "You" : profile.name.split(" ")[0]} · {m.time}
+                      {user ? "You" : profile.name.split(" ")[0]}{m.time && ` · ${m.time}`}
                     </span>
                   </div>
                 </motion.div>

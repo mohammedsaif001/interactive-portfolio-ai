@@ -1,0 +1,23 @@
+# Mohammed Saif
+
+> Mohammed Saif (also: imohdsaif, mohammedsaif001, mohammed001saif) is a Senior Software Engineer based in Bengaluru (Bangalore), India, open to immediate joining. He builds full-stack products and GenAI features: React, Next.js, Node.js, TypeScript, Azure OpenAI, RAG, MCP and AI agents, mostly on Microsoft D365 Commerce. Studied at Presidency University, Bengaluru.
+
+## Facts
+- Role: Senior Software Engineer (full-stack and GenAI)
+- Current company: BASOFA (Microsoft Certified Partner), Nov 2024 to present
+- Previous: Aarabhya Systems (Apr 2023 to Nov 2024), Nviera Technologies (Jul 2022 to Feb 2023)
+- Location: Bengaluru, Karnataka, India; open to remote work
+- Availability: immediate joining; open to remote full-stack and GenAI engineering roles
+- Contact: imohdsaif.ai@gmail.com
+
+## Skills
+- Frontend: React, Next.js, Redux, Tailwind, Material UI, shadcn/ui, HTML5, CSS3
+- Backend: JavaScript, TypeScript, Node.js, Express
+- GenAI: OpenAI API, Azure OpenAI, Claude, MCP, RAG, vector search, AI agents, Inngest
+- Data: MongoDB, PostgreSQL, Redis, SQL
+- Cloud: Microsoft Azure, Azure DevOps, Docker, GitHub
+
+## Links
+- LinkedIn: https://www.linkedin.com/in/mohammedsaif001
+- GitHub: https://github.com/mohammedsaif001
+- LeetCode: https://leetcode.com/u/mohammedsaif001/
