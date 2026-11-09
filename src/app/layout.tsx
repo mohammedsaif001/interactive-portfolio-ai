@@ -9,6 +9,15 @@ const hand = Caveat({ variable: "--font-hand", subsets: ["latin"], weight: ["500
 export const metadata: Metadata = {
   title: "Mohammed Saif | Senior Software Engineer · Full-stack · GenAI",
   description: "Interactive portfolio of Mohammed Saif, senior full-stack and GenAI engineer.",
+  // Icons live in /public (served from the site root), so they are declared here rather than as
+  // special files inside src/app.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon.png", type: "image/png", sizes: "128x128" },
+    ],
+    apple: { url: "/icons/apple-icon.png", sizes: "180x180" },
+  },
 };
 
 export const viewport: Viewport = {
