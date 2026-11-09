@@ -39,7 +39,7 @@ export function ProfilePhoto({ size = "lg", className = "" }: { size?: keyof typ
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={profile.photo} alt={`${profile.name}, profile photo`} className={`${face} object-[50%_30%]`} />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/mohammed-ink.webp" alt="" aria-hidden className={`${face} object-[50%_45%] [transform:rotateY(180deg)]`} />
+          <img src="/images/mohammed-ink.webp" alt="" aria-hidden className={`${face} object-[50%_45%] [transform:rotateY(180deg)]`} />
         </motion.span>
       </button>
       <span className="font-hand pointer-events-none absolute bottom-1 left-0 right-0 text-center text-xl text-[#1f2430]">{flipped ? "sketched me!" : "that’s me!"}</span>

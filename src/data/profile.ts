@@ -6,7 +6,7 @@ import type { Job, Project, Recommendation, SkillGroup, Social } from "./types";
 export const profile = {
   name: "Mohammed Saif",
   initials: "MS",
-  photo: "/mohammed-saif.jpg",
+  photo: "/images/mohammed-saif.jpg",
   role: "Senior Software Engineer",
   subtitle: "Full-stack · GenAI",
   rotatingRoles: ["Full-stack engineer", "GenAI builder", "D365 Commerce engineer", "Team mentor"],
