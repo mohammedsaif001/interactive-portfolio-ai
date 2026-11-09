@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import { ArrowLeft, Download } from "lucide-react";
 import { profile, sections, type SectionId } from "@/data/profile";
 import { sectionIcons } from "@/lib/sectionIcons";
-import { Sketch } from "@/components/ui/Sketch";
 import { Intro } from "@/components/sections/Intro";
 import { About } from "@/components/sections/About";
 import { Experience } from "@/components/sections/Experience";
@@ -25,8 +24,6 @@ const content: Record<SectionId, ReactNode> = {
   skills: <Skills />,
   contact: <Contact />,
 };
-
-const tints = ["yellow", "blue", "coral", "green"] as const;
 
 /** Plain-language, no-panning version of the whiteboard, aimed at recruiters and HR. */
 export function QuickOverview({ onBack }: { onBack: () => void }) {
@@ -82,16 +79,6 @@ export function QuickOverview({ onBack }: { onBack: () => void }) {
         {sections.map((s, i) => (
           <section key={s.id} id={s.id} className={`scroll-mt-32 ${i === 0 ? "" : "mt-14"}`}>
             {content[s.id]}
-            {s.id === "intro" && (
-              <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {profile.facts.map((f, k) => (
-                  <Sketch key={f.label} seed={80 + k} fill={tints[k % 4]} className="p-4 text-center">
-                    <dt className="text-xs font-semibold uppercase tracking-wide opacity-70">{f.label}</dt>
-                    <dd className="font-hand mt-1 text-3xl font-bold leading-none">{f.value}</dd>
-                  </Sketch>
-                ))}
-              </dl>
-            )}
           </section>
         ))}
 

@@ -56,13 +56,6 @@ export const profile = {
     { id: "github", label: "GitHub", handle: "@mohammedsaif001", href: "https://github.com/mohammedsaif001" },
     { id: "leetcode", label: "LeetCode", handle: "@mohammedsaif001", href: "https://leetcode.com/u/mohammedsaif001/" },
   ] satisfies Social[],
-  // Shown as the "at a glance" cards on the overview page.
-  facts: [
-    { label: "Building software", value: "Since 2021" },
-    { label: "Focus", value: "Full-stack + GenAI" },
-    { label: "Currently", value: "Senior Engineer, BASOFA" },
-    { label: "Based in", value: "Bengaluru · remote friendly" },
-  ],
   // "About me" frame: deliberately short and scannable.
   about: {
     summary: "I build the interfaces and AI features of enterprise commerce software. Right now that means designing how LLMs plug into Microsoft D365 Commerce.",
