@@ -49,8 +49,10 @@ export function EntryScreen({ onExplore, onOverview, isDesktop }: Props) {
     }
   }, [lines, phase]);
 
+  // The exit is a fade only. A scale-up exit made this full-screen element poke past the window edges,
+  // which briefly made the page scrollable (scrollbars flashed in, then vanished and shifted the layout).
   return (
-    <motion.main exit={{ opacity: 0, scale: 1.04 }} transition={{ duration: 0.4 }} className="relative grid min-h-dvh place-items-center overflow-hidden px-4 py-10">
+    <motion.main exit={{ opacity: 0 }} transition={{ duration: 0.4 }} className="relative grid min-h-dvh place-items-center overflow-hidden px-4 py-10">
       <ThemeToggle className="fixed right-4 top-4 z-10" />
 
       <AnimatePresence mode="wait">
