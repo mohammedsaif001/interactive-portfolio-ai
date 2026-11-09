@@ -2,10 +2,10 @@
 
 import { useState, useSyncExternalStore } from "react";
 import { AnimatePresence } from "framer-motion";
-import { EntryScreen } from "@/components/entry/EntryScreen";
-import { Whiteboard } from "@/components/canvas/Whiteboard";
-import { Story } from "@/components/story/Story";
-import { QuickOverview } from "@/components/overview/QuickOverview";
+import { EntryScreen } from "@/components/views/EntryScreen";
+import { Whiteboard } from "@/components/views/Whiteboard";
+import { Story } from "@/components/views/Story";
+import { QuickOverview } from "@/components/views/QuickOverview";
 import { ChatWidget } from "@/components/chat/ChatWidget";
 
 type View = "entry" | "explore" | "overview";
