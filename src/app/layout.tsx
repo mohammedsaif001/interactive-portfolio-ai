@@ -3,6 +3,8 @@ import { Caveat, Inter } from "next/font/google";
 import { ThemeProvider, themeInitScript } from "@/lib/theme";
 import { keywords, seoDescription, seoTitle, siteName, siteUrl, structuredData } from "@/lib/seo";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 const body = Inter({ variable: "--font-body", subsets: ["latin"] });
 const hand = Caveat({ variable: "--font-hand", subsets: ["latin"], weight: ["500", "700"] });
@@ -69,7 +71,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <feDisplacementMap in="SourceGraphic" in2="n" scale="3" />
           </filter>
         </svg>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>{children}
+          <Analytics />
+          <SpeedInsights />
+        </ThemeProvider>
       </body>
     </html>
   );

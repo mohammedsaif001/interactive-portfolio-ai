@@ -78,7 +78,7 @@ export function PortfolioApp() {
       )}
 
       {overviewMounted && (
-        <div ref={overviewRef} inert={!showOverview} aria-hidden={!showOverview} className={`page-bg fixed inset-0 z-30 overflow-y-auto will-change-[opacity] ${showOverview ? fadeIn : fadeOut}`}>
+        <div ref={overviewRef} inert={!showOverview} aria-hidden={!showOverview} className={`page-bg fixed inset-0 z-30 overflow-y-auto scroll-smooth will-change-[opacity] ${showOverview ? fadeIn : fadeOut}`}>
           <QuickOverview onBack={() => setView("explore")} />
         </div>
       )}

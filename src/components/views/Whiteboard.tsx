@@ -164,7 +164,12 @@ function Board({ onOverview }: { onOverview: () => void }) {
   const flyTo = useCallback(
     (id: SectionId) => {
       setActive(id);
-      rf.fitView({ nodes: [{ id }], duration: 900, padding: 0.12, maxZoom: 1.1 });
+      // fitView with a node filter can be swallowed by the initial fitView still being queued (that is why
+      // the first click did nothing). Computing the bounds ourselves and calling fitBounds always runs.
+      const node = rf.getNode(id);
+      if (!node) return;
+      const bounds = rf.getNodesBounds([node]);
+      rf.fitBounds(bounds, { duration: 900, padding: 0.12 });
     },
     [rf],
   );
