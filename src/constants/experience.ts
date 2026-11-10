@@ -4,7 +4,7 @@ import type { Job } from "./types";
 export const experience = [
   {
     role: "Senior Software Engineer",
-    company: "BASOFA (Microsoft Certified Partner)",
+    company: "Basofa Consulting Private Limited (Microsoft Certified Partner)",
     period: "Nov 2024 to Present",
     plain: "Designs how AI fits into Microsoft D365 Commerce, and builds the storefront experiences on top of it.",
     points: [

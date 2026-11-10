@@ -14,9 +14,9 @@ export const basics = {
   since: "2021", // first engineering work (TCS iON internship, Oct 2021); full-time roles start Jul 2022
   recommendationsUrl: "https://www.linkedin.com/in/mohammedsaif001/details/recommendations/",
   // one-line pitch under the name
-  tagline: "A senior engineer who turns complex systems into clear products, and makes AI genuinely useful inside them.",
+  tagline: "Senior engineer: front-end craft, back-end depth, and AI that earns its place in the product.",
   // longer intro, also reused by the chat bot and the FAQ answer "What does Mohammed Saif do?"
-  bio: "Senior software engineer working across full-stack development and AI integration, building enterprise solutions on Microsoft D365 Commerce. I design how AI fits into the platform (intent parsing, RAG, MCP connections) and build the React experiences people actually use.",
+  bio: "Senior software engineer building software since 2021: React and Next.js interfaces, Node.js services and Azure OpenAI. Today I design how AI fits into Microsoft D365 Commerce, and lead the sprints, reviews and mentoring around it.",
   availability: "Open to remote full-stack and GenAI engineering roles",
   resumeHref: "", // TODO: add public/resume.pdf, then set this to "/resume.pdf". Empty hides every Resume button.
   email: "imohdsaif.ai@gmail.com",

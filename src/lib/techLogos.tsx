@@ -121,6 +121,7 @@ const aliases: Record<string, string> = {
   azurecosmosdb: "azure",
   cosmosdb: "azure",
   azureblobstorage: "azure",
+  azureaisearch: "azure",
 };
 
 const key = (name: string) => {
