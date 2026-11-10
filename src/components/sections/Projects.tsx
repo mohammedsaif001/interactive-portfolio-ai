@@ -116,7 +116,19 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-hand text-2xl text-muted">Case study</p>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <p className="font-hand text-2xl text-muted">Case study</p>
+                  {project.live && (
+                    <a href={project.live} target="_blank" rel="noreferrer" aria-label={`Open the live ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-1.5 rounded-lg border-2 border-ink bg-coral px-2.5 py-1 text-xs font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
+                      Live demo <ExternalLink size={13} aria-hidden />
+                    </a>
+                  )}
+                  {project.repo && (
+                    <a href={project.repo} target="_blank" rel="noreferrer" aria-label={`View the ${project.title} code on GitHub (opens in a new tab)`} className="inline-flex items-center gap-1.5 rounded-lg border-2 border-ink bg-white px-2.5 py-1 text-xs font-bold text-[#1f2430] shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
+                      <TechLogo name="github" size={14} /> GitHub
+                    </a>
+                  )}
+                </div>
                 <h2 id="case-study-title" className="glow font-hand text-5xl font-bold leading-none">
                   <span className="marker">{project.title}</span>
                 </h2>
@@ -165,20 +177,6 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               ))}
             </ol>
 
-            {(project.live || project.repo) && (
-              <div className="mt-6 flex flex-wrap gap-3">
-                {project.live && (
-                  <a href={project.live} target="_blank" rel="noreferrer" aria-label={`Open the live ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
-                    Live demo <ExternalLink size={15} aria-hidden />
-                  </a>
-                )}
-                {project.repo && (
-                  <a href={project.repo} target="_blank" rel="noreferrer" aria-label={`View the ${project.title} code on GitHub (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-white px-4 py-2 text-sm font-bold text-[#1f2430] shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
-                    <TechLogo name="github" size={16} /> GitHub
-                  </a>
-                )}
-              </div>
-            )}
           </motion.article>
         </motion.div>
       )}
