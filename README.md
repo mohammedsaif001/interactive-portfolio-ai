@@ -2,7 +2,7 @@
 
 A hand-drawn, whiteboard-style portfolio (think Excalidraw or Eraser) built with Next.js. Visitors can pan
 around a draggable whiteboard, read a short single-column overview, or scroll the mobile version, all from one
-source of truth: [`src/data/profile.ts`](src/data/profile.ts).
+source of truth: the files in [`src/constants/`](src/constants/).
 
 **Stack:** Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS v4, `@xyflow/react`
 (whiteboard), `roughjs` (hand-drawn borders), `framer-motion`, `lucide-react` and `react-icons` (logos).
@@ -56,10 +56,10 @@ public/
 
 ## Conventions
 
-- **Content lives in `src/data/profile.ts`.** Components never hard-code personal details.
+- **Content lives in `src/constants/` (one file per topic: `about.ts`, `experience.ts`, `projects.ts`, `skills.ts`, `recommendations.ts`, `socials.ts`, `basics.ts`, plus `seo.ts`, `faqs.ts`, `chat.ts`).** Components never hard-code personal details.
 - **Sections are written once.** `sections/*` render inside the whiteboard, the mobile story and the overview, so the
   three views can never drift apart.
-- **Import with the `@/` alias** (`@/components/...`, `@/data/...`, `@/lib/...`), which maps to `src/`.
+- **Import with the `@/` alias** (`@/components/...`, `@/constants/...`, `@/lib/...`), which maps to `src/`.
 - **Adding a skill logo:** add the technology to `src/lib/techLogos.tsx`; unknown names get a generic icon.
 - **Theme:** `data-theme` on `<html>`, set by an inline script before paint. Colours are CSS variables in `globals.css`.
 - **Next.js version:** this version has breaking changes. Read `node_modules/next/dist/docs/` before relying on memory
@@ -67,7 +67,7 @@ public/
 
 ## Still to do
 
-- Real photo already in; add `public/resume.pdf`, then set `resumeHref` in `src/data/profile.ts`
+- Real photo already in; add `public/resume.pdf`, then set `resumeHref` in `src/constants/basics.ts`
   (the Resume buttons stay hidden while it is empty).
 - Real Claude-backed `/api/chat` agent grounded in `profile.ts`.
 - SEO metadata and Open Graph image, accessibility and reduced-motion pass, deploy to Vercel.

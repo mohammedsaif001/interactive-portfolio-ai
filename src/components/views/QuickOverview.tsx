@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 import { ArrowLeft, Download } from "lucide-react";
-import { profile } from "@/data/profile";
-import { sections, type SectionId } from "@/data/sections";
+import { profile } from "@/constants";
+import { sections, type SectionId } from "@/constants/sections";
 import { sectionIcons } from "@/lib/sectionIcons";
 import { Intro } from "@/components/sections/Intro";
 import { About } from "@/components/sections/About";

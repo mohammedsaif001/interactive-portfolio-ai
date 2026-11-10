@@ -3,9 +3,10 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { MessageCircle, Send, Sparkles, User, X } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile } from "@/constants";
 import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
-import { mockReply, suggestedPrompts } from "@/lib/mockAgent";
+import { mockReply } from "@/lib/mockAgent";
+import { chatGreeting, suggestedPrompts } from "@/constants/chat";
 
 type Msg = { role: "user" | "bot"; text: string; time: string };
 
@@ -56,7 +57,7 @@ export function ChatWidget() {
   const [busy, setBusy] = useState(false);
   const [input, setInput] = useState("");
   const [msgs, setMsgs] = useState<Msg[]>([
-    { role: "bot", text: `Hi! I'm ${profile.name.split(" ")[0]}'s assistant. Ask me anything about his work, skills or availability.`, time: "" },
+    { role: "bot", text: chatGreeting(profile.name.split(" ")[0]), time: "" },
   ]);
   const endRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);

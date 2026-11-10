@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type MouseEvent } from "react";
-import { sections, type SectionId } from "@/data/sections";
+import { sections, type SectionId } from "@/constants/sections";
 
 /** Nearest ancestor that actually scrolls vertically, or null when the page (window) scrolls. */
 function scrollParent(el: HTMLElement | null): HTMLElement | null {

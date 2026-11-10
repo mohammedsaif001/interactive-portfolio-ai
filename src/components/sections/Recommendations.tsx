@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, ExternalLink, Heart, Quote, Star } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile } from "@/constants";
 import { FloatIcon } from "@/components/ui/Doodles";
 import { SectionTitle } from "@/components/ui/Sketch";
 import { TechLogo } from "@/lib/techLogos";

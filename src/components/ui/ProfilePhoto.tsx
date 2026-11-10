@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { BadgeCheck, Pencil } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile } from "@/constants";
 
 const sizes = {
   lg: "h-[170px] w-[170px] sm:h-[210px] sm:w-[210px]",

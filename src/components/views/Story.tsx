@@ -2,8 +2,8 @@
 
 import { Fragment, useState, type ReactNode } from "react";
 import { useSectionSpy } from "@/lib/useSectionSpy";
-import { profile } from "@/data/profile";
-import { sections, type SectionId } from "@/data/sections";
+import { profile } from "@/constants";
+import { sections, type SectionId } from "@/constants/sections";
 import { DownArrow } from "@/components/ui/Sketch";
 import { ThemeToggle } from "@/lib/theme";
 import { sectionIcons } from "@/lib/sectionIcons";

@@ -25,8 +25,8 @@ import {
 import "@xyflow/react/dist/style.css";
 import { motion } from "framer-motion";
 import { GripVertical, LayoutList, RotateCcw } from "lucide-react";
-import { profile } from "@/data/profile";
-import { sections, type SectionId } from "@/data/sections";
+import { profile } from "@/constants";
+import { sections, type SectionId } from "@/constants/sections";
 import { ThemeToggle } from "@/lib/theme";
 import { sectionIcons } from "@/lib/sectionIcons";
 import { Intro } from "@/components/sections/Intro";

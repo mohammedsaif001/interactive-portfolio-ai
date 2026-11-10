@@ -1,5 +1,6 @@
 // The whiteboard / overview / story sections, in reading order.
 
+// Order here is the order of the nav pills and the page.
 export const sections = [
   { id: "intro", label: "Hello" },
   { id: "about", label: "About me" },

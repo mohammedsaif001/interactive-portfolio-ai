@@ -2,8 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Cloud, Cpu, Database, Monitor, Server, Sparkles, type LucideIcon } from "lucide-react";
-import { profile } from "@/data/profile";
-import type { SkillGroup } from "@/data/types";
+import { profile } from "@/constants";
+import type { SkillGroup } from "@/constants/types";
 import { Sketch, SectionTitle } from "@/components/ui/Sketch";
 import { TechChip } from "@/components/ui/TechChip";
 

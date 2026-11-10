@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Caveat, Inter } from "next/font/google";
 import { ThemeProvider, themeInitScript } from "@/lib/theme";
-import { keywords, seoDescription, seoTitle, siteName, siteUrl, structuredData } from "@/lib/seo";
+import { keywords, seoDescription, seoTitle, siteName, siteUrl } from "@/constants/seo";
+import { structuredData } from "@/lib/seo";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next"
