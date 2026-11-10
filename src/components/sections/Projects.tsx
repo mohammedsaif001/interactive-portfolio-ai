@@ -14,14 +14,15 @@ export function Projects() {
   const [open, setOpen] = useState<Project | null>(null);
 
   return (
-    <Sketch seed={31} className="p-6 sm:p-8">
+    <Sketch seed={31} className="@container p-6 sm:p-8">
       <FloatIcon icon={Zap} color="yellow" className="-right-5 -top-5" rotate={12} />
       <CurvyArrow label="click one!" className="right-5 top-12" />
       <SectionTitle icon={Rocket} color="blue">
         Things I&apos;ve built
       </SectionTitle>
       <p className="-mt-2 mb-4 text-sm text-muted">Tap a project for the full case study.</p>
-      <div className="space-y-5">
+      {/* one column when narrow, two when the frame is resized wide (container query, so it follows the frame, not the screen) */}
+      <div className="grid gap-5 @2xl:grid-cols-2">
         {profile.projects.map((p, i) => (
           <Sketch key={p.title} as="button" aria-haspopup="dialog" aria-label={`${p.title}: open case study`} onClick={() => setOpen(p)} fill={p.color} seed={40 + i} roughness={1.1} className="group block w-full cursor-pointer text-left transition hover:-translate-y-1 hover:rotate-[-0.4deg]">
             <div className="p-4">

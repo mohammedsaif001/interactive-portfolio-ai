@@ -47,9 +47,9 @@ const content: Record<SectionId, ReactNode> = {
   contact: <Contact />,
 };
 
-const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 520, recs: 460, skills: 760, contact: 560 };
+const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 1000, recs: 460, skills: 760, contact: 560 };
 // Approximate rendered heights, only so the minimap can draw frames; real sizes are measured by React Flow.
-const heights: Record<SectionId, number> = { intro: 418, about: 586, experience: 695, projects: 1248, recs: 504, skills: 962, contact: 340 };
+const heights: Record<SectionId, number> = { intro: 418, about: 586, experience: 695, projects: 830, recs: 504, skills: 962, contact: 480 };
 
 const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1 };
 
@@ -68,12 +68,7 @@ function FrameNode({ data }: NodeProps<Node<{ id: SectionId }>>) {
       </NodeResizeControl>
       <Handle id="tl" type="target" position={Position.Left} style={hidden} />
       <Handle id="tt" type="target" position={Position.Top} style={hidden} />
-      <Handle id="tb" type="target" position={Position.Bottom} style={hidden} />
       <Handle id="tr" type="target" position={Position.Right} style={hidden} />
-      <Handle id="st" type="source" position={Position.Top} style={hidden} />
-      {/* corner handles, so two arrows never have to leave from the same point */}
-      <Handle id="sbl" type="source" position={Position.Bottom} style={{ ...hidden, left: "4%" }} />
-      <Handle id="slt" type="source" position={Position.Left} style={{ ...hidden, top: "12%" }} />
       <Handle id="sr" type="source" position={Position.Right} style={hidden} />
       <Handle id="sb" type="source" position={Position.Bottom} style={hidden} />
       <Handle id="sl" type="source" position={Position.Left} style={hidden} />
@@ -122,22 +117,21 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
 const nodeTypes = { frame: FrameNode };
 const edgeTypes = { flow: FlowEdge };
 
-// Hub and spoke, spread wide: the intro card sits in the middle and every other section branches off it, about
-// 260px away so connector labels stay clear of the cards. The tall frames (skills ~960px, projects ~1250px)
-// take the left and right axes so the board is wide rather than tall and fills a landscape screen when fitted.
-//                           contact (top)
-//                about                              projects
-//   skills <-----          INTRO          ----->     (level with intro)
-//                experience   recs (bottom)
-// If you add more projects, nothing else needs to move: projects hangs down the right with empty space around it.
+// A "]" path: the top row runs left to right, the path drops down the right edge, and the bottom row runs
+// back right to left. Gaps between frames are about 240px so connector labels stay clear of the cards.
+//   intro -> about -> skills -> experience
+//                                  |
+//                  contact <- recs <- projects
+// Projects is wide (two columns of cards) so the board stays landscape. Frames in the top row are centred on
+// the same line so the arrows run straight.
 const positions: Record<SectionId, { x: number; y: number }> = {
-  intro: { x: 0, y: 0 },
-  skills: { x: -1800, y: -270 },
-  about: { x: -780, y: -560 },
-  experience: { x: -780, y: 420 },
-  projects: { x: 1000, y: -415 },
-  recs: { x: 130, y: 620 },
-  contact: { x: 200, y: -540 },
+  intro: { x: 0, y: 272 },
+  about: { x: 960, y: 188 },
+  skills: { x: 1720, y: 0 },
+  experience: { x: 2720, y: 134 },
+  projects: { x: 2260, y: 1049 },
+  recs: { x: 1560, y: 1212 },
+  contact: { x: 760, y: 1224 },
 };
 
 // Frames start at a fixed width (so the resizer can change it) but never get a fixed height:
@@ -165,12 +159,12 @@ const edge = (id: string, source: SectionId, sh: string, target: SectionId, th: 
 });
 
 const edges: Edge[] = [
-  edge("e1", "intro", "slt", "about", "tr", "about me"),
-  edge("e2", "intro", "sl", "skills", "tr", "my toolkit"),
-  edge("e3", "intro", "sbl", "experience", "tr", "my work"),
-  edge("e4", "intro", "sr", "projects", "tl", "what I built"),
-  edge("e5", "intro", "sb", "recs", "tt", "what people say"),
-  edge("e6", "intro", "st", "contact", "tb", "let's talk"),
+  edge("e1", "intro", "sr", "about", "tl", "about me"),
+  edge("e2", "about", "sr", "skills", "tl", "my toolkit"),
+  edge("e3", "skills", "sr", "experience", "tl", "my work"),
+  edge("e4", "experience", "sb", "projects", "tt", "what I built"),
+  edge("e5", "projects", "sl", "recs", "tr", "what people say"),
+  edge("e6", "recs", "sl", "contact", "tr", "let's talk"),
 ];
 
 // Room kept clear for the floating top bar and the bottom hint bar when the whole board is fitted.
