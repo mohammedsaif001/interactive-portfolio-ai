@@ -49,7 +49,7 @@ const content: Record<SectionId, ReactNode> = {
 
 const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 1000, recs: 460, skills: 760, contact: 560 };
 // Approximate rendered heights, only so the minimap can draw frames; real sizes are measured by React Flow.
-const heights: Record<SectionId, number> = { intro: 418, about: 586, experience: 695, projects: 850, recs: 504, skills: 908, contact: 480 };
+const heights: Record<SectionId, number> = { intro: 418, about: 586, experience: 840, projects: 850, recs: 504, skills: 908, contact: 480 };
 
 const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1 };
 
@@ -131,9 +131,9 @@ const positions: Record<SectionId, { x: number; y: number }> = {
   about: { x: 960, y: 188 },
   skills: { x: 1720, y: 27 },
   experience: { x: 2720, y: 134 },
-  projects: { x: 2260, y: 1049 },
-  recs: { x: 1560, y: 1222 },
-  contact: { x: 760, y: 1234 },
+  projects: { x: 2260, y: 1219 },
+  recs: { x: 1560, y: 1392 },
+  contact: { x: 760, y: 1404 },
 };
 
 // Frames start at a fixed width (so the resizer can change it) but never get a fixed height:
