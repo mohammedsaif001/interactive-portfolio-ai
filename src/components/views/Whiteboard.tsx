@@ -49,7 +49,7 @@ const content: Record<SectionId, ReactNode> = {
 
 const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 520, recs: 460, skills: 760, contact: 560 };
 // Approximate rendered heights, only so the minimap can draw frames; real sizes are measured by React Flow.
-const heights: Record<SectionId, number> = { intro: 520, about: 430, experience: 600, projects: 1250, recs: 640, skills: 1010, contact: 297 };
+const heights: Record<SectionId, number> = { intro: 418, about: 586, experience: 695, projects: 1248, recs: 504, skills: 962, contact: 340 };
 
 const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1 };
 
@@ -68,10 +68,24 @@ function FrameNode({ data }: NodeProps<Node<{ id: SectionId }>>) {
       </NodeResizeControl>
       <Handle id="tl" type="target" position={Position.Left} style={hidden} />
       <Handle id="tt" type="target" position={Position.Top} style={hidden} />
+      <Handle id="tb" type="target" position={Position.Bottom} style={hidden} />
       <Handle id="tr" type="target" position={Position.Right} style={hidden} />
+      <Handle id="st" type="source" position={Position.Top} style={hidden} />
+      {/* corner handles, so two arrows never have to leave from the same point */}
+      <Handle id="sbl" type="source" position={Position.Bottom} style={{ ...hidden, left: "4%" }} />
+      <Handle id="slt" type="source" position={Position.Left} style={{ ...hidden, top: "12%" }} />
       <Handle id="sr" type="source" position={Position.Right} style={hidden} />
       <Handle id="sb" type="source" position={Position.Bottom} style={hidden} />
       <Handle id="sl" type="source" position={Position.Left} style={hidden} />
+      {data.id === "intro" && (
+        <div className="font-hand pointer-events-none absolute -bottom-10 -left-16 z-[5] flex -rotate-6 items-center gap-1 whitespace-nowrap text-2xl font-bold text-accent">
+          start here
+          <svg aria-hidden width="38" height="30" viewBox="0 0 38 30" fill="none" className="wobble mt-[-14px]">
+            <path d="M3 27C10 22 14 12 32 4" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+            <path d="M22 3l11 1-4 10" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      )}
       {content[data.id]}
     </div>
   );
@@ -108,18 +122,22 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
 const nodeTypes = { frame: FrameNode };
 const edgeTypes = { flow: FlowEdge };
 
-// Gaps between frames are kept around 240px so connector labels stay clear of the cards, and the
-// second row starts well below the tallest frame in the first row (projects, ~1250px with five cards) so nothing
-// overlaps. If you add more projects, push the second row (recs, skills, contact) down by about 220px per card.
-// Reading path snakes: intro -> story -> experience -> projects, down to kind words, left to skills, left to contact.
+// Hub and spoke, spread wide: the intro card sits in the middle and every other section branches off it, about
+// 260px away so connector labels stay clear of the cards. The tall frames (skills ~960px, projects ~1250px)
+// take the left and right axes so the board is wide rather than tall and fills a landscape screen when fitted.
+//                           contact (top)
+//                about                              projects
+//   skills <-----          INTRO          ----->     (level with intro)
+//                experience   recs (bottom)
+// If you add more projects, nothing else needs to move: projects hangs down the right with empty space around it.
 const positions: Record<SectionId, { x: number; y: number }> = {
   intro: { x: 0, y: 0 },
-  about: { x: 960, y: -60 },
-  experience: { x: 1720, y: -110 },
-  projects: { x: 2500, y: -110 },
-  recs: { x: 2530, y: 1420 },
-  skills: { x: 1530, y: 1380 },
-  contact: { x: 730, y: 1440 },
+  skills: { x: -1800, y: -270 },
+  about: { x: -780, y: -560 },
+  experience: { x: -780, y: 420 },
+  projects: { x: 1000, y: -415 },
+  recs: { x: 130, y: 620 },
+  contact: { x: 200, y: -540 },
 };
 
 // Frames start at a fixed width (so the resizer can change it) but never get a fixed height:
@@ -147,13 +165,16 @@ const edge = (id: string, source: SectionId, sh: string, target: SectionId, th: 
 });
 
 const edges: Edge[] = [
-  edge("e1", "intro", "sr", "about", "tl", "about me"),
-  edge("e1b", "about", "sr", "experience", "tl", "my work"),
-  edge("e2", "experience", "sr", "projects", "tl", "what I built"),
-  edge("e3", "projects", "sb", "recs", "tt", "what people say"),
-  edge("e4", "recs", "sl", "skills", "tr", "how I do it"),
-  edge("e5", "skills", "sl", "contact", "tr", "let's talk"),
+  edge("e1", "intro", "slt", "about", "tr", "about me"),
+  edge("e2", "intro", "sl", "skills", "tr", "my toolkit"),
+  edge("e3", "intro", "sbl", "experience", "tr", "my work"),
+  edge("e4", "intro", "sr", "projects", "tl", "what I built"),
+  edge("e5", "intro", "sb", "recs", "tt", "what people say"),
+  edge("e6", "intro", "st", "contact", "tb", "let's talk"),
 ];
+
+// Room kept clear for the floating top bar and the bottom hint bar when the whole board is fitted.
+const fitAllPadding = { top: "96px", bottom: "84px", left: "32px", right: "32px" } as const;
 
 const miniColors = ["var(--yellow)", "var(--blue)", "var(--coral)", "var(--green)"];
 
@@ -178,7 +199,7 @@ function Board({ onOverview }: { onOverview: () => void }) {
   // Put every frame back in its default place and re-frame the whole board.
   const resetLayout = useCallback(() => {
     setNodes(initialNodes);
-    setTimeout(() => rf.fitView({ duration: 800, padding: 0.1 }), 60);
+    setTimeout(() => rf.fitView({ duration: 800, padding: fitAllPadding }), 250);
   }, [rf, setNodes]);
 
   return (
@@ -199,6 +220,10 @@ function Board({ onOverview }: { onOverview: () => void }) {
         nodesDraggable
         /* ignore tiny movements so a click on a card is never mistaken for a drag */
         nodeDragThreshold={4}
+        /* double-click (or double-tap) a frame to zoom onto it and highlight it in the top nav; the
+           default double-click-to-zoom-in is turned off so the two do not fight */
+        zoomOnDoubleClick={false}
+        onNodeDoubleClick={(_, node) => flyTo(node.id as SectionId)}
         nodesConnectable={false}
         elementsSelectable={false}
         panOnScroll
@@ -267,7 +292,7 @@ function Board({ onOverview }: { onOverview: () => void }) {
 
       <div className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 items-center gap-2 md:flex">
         <p className="pointer-events-none rounded-full border-2 border-ink bg-card px-4 py-1 text-xs font-semibold shadow-[2px_2px_0_var(--shadow)]">
-          Drag frames to rearrange · drag a right edge to resize · Ctrl + scroll to zoom
+          Double-click a frame to focus it · drag to rearrange · Ctrl + scroll to zoom
         </p>
         <button onClick={resetLayout} aria-label="Reset the frame layout to default" className="flex items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3 py-1 text-xs font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
           <RotateCcw size={13} aria-hidden /> Reset layout
