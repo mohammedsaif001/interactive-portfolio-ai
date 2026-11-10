@@ -6,7 +6,7 @@ import { MessageCircle, Send, Sparkles, User, X } from "lucide-react";
 import { profile } from "@/constants";
 import { DoodleAvatar } from "@/components/ui/DoodleAvatar";
 import { mockReply } from "@/lib/mockAgent";
-import { chatGreeting, suggestedPrompts } from "@/constants/chat";
+import { chatGreeting, chatStatus, suggestedPrompts } from "@/constants/chat";
 
 type Msg = { role: "user" | "bot"; text: string; time: string };
 
@@ -130,7 +130,7 @@ export function ChatWidget() {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-mint opacity-70" />
                     <span className="relative inline-flex size-2 rounded-full border border-ink bg-mint" />
                   </span>
-                  Online · AI assistant · preview
+                  {chatStatus}
                 </p>
               </div>
             </div>
@@ -168,7 +168,8 @@ export function ChatWidget() {
               );
             })}
             {busy && <TypingBubble />}
-            {msgs.length === 1 && (
+            {/* chips stay available after every bot reply, so a visitor is never left at a dead end */}
+            {!busy && msgs[msgs.length - 1]?.role === "bot" && (
               <div className="flex flex-wrap gap-2 pl-10 pt-1">
                 {suggestedPrompts.map((p) => (
                   <button
