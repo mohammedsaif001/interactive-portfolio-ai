@@ -35,7 +35,7 @@ export function Projects() {
               <p className="mt-2 text-sm font-bold">★ {p.impact}</p>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {p.tags.map((t) => (
-                  <TechChip key={t} name={t} />
+                  <TechChip key={t} name={t} iconOnly />
                 ))}
               </div>
             </div>

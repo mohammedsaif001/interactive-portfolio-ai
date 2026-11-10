@@ -82,7 +82,7 @@ export const projects = [
   {
     title: "Agent SDK Built From Scratch",
     blurb: "A small TypeScript library that runs an LLM in a reasoning loop, calls validated tools, hands tasks between agents and screens inputs and outputs.",
-    impact: "Bad tool arguments go back to the model as structured errors, so it can correct itself and retry",
+    impact: "Schema-validated tools with self-correcting retries",
     tags: ["TypeScript", "OpenAI API", "Zod", "Node.js"],
     stack: ["TypeScript", "OpenAI API", "Zod", "Node.js", "Multi-agent", "Guardrails"],
     repo: "https://github.com/mohammedsaif001/agent-sdk-from-scratch",
