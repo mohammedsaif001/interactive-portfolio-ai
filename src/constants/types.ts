@@ -11,19 +11,18 @@ export type Job = {
   plain: string; // plain-language summary for the recruiter view
   points: string[];
 };
-export type Metric = { value: number; prefix?: string; suffix?: string; label: string };
 export type Project = {
   title: string;
   blurb: string;
   impact: string;
-  tags: string[];
+  tags: string[]; // short list shown on the card
+  stack?: string[]; // fuller list for the case study "Built with" row; defaults to `tags`
   href?: string; // omit for private / employer work: the "View project" button is hidden
   color: Color;
   role: string;
   problem: string;
   approach: string;
   architecture: string[]; // left-to-right flow of components
-  metrics: Metric[];
 };
 export type SkillGroup = {
   id: "frontend" | "backend" | "genai" | "data" | "cloud";

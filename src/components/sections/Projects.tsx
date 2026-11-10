@@ -7,7 +7,7 @@ import { ArrowRight, ExternalLink, Rocket, X, Zap } from "lucide-react";
 import { profile } from "@/constants";
 import type { Project } from "@/constants/types";
 import { Sketch, SectionTitle, Tag } from "@/components/ui/Sketch";
-import { CountUp } from "@/components/ui/Motion";
+import { TechChip } from "@/components/ui/TechChip";
 import { CurvyArrow, FloatIcon } from "@/components/ui/Doodles";
 
 export function Projects() {
@@ -125,16 +125,16 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               </button>
             </div>
 
-            <dl className="mt-6 grid gap-3 sm:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" style={{ "--n": project.metrics.length } as React.CSSProperties}>
-              {project.metrics.map((m) => (
-                <div key={m.label} className="rounded-xl border-2 border-ink p-4 text-center" style={{ background: `var(--${project.color})` }}>
-                  <dd className="glow font-hand text-5xl font-bold leading-none">
-                    <CountUp now value={m.value} prefix={m.prefix} suffix={m.suffix} />
-                  </dd>
-                  <dt className="mt-1 text-xs font-semibold">{m.label}</dt>
-                </div>
-              ))}
-            </dl>
+            <section aria-label="Built with" className="mt-6">
+              <h3 className="font-hand text-3xl font-bold">Built with</h3>
+              <ul className="mt-2 flex flex-wrap gap-2.5">
+                {(project.stack ?? project.tags).map((tag) => (
+                  <li key={tag}>
+                    <TechChip name={tag} size="lg" />
+                  </li>
+                ))}
+              </ul>
+            </section>
 
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <section>
@@ -143,7 +143,11 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               </section>
               <section>
                 <h3 className="font-hand text-3xl font-bold">What I did</h3>
-                <p className="mt-1 text-[15px] leading-relaxed text-muted">{project.approach}</p>
+                {project.approach.split("\n\n").map((para, i) => (
+                  <p key={i} className="mt-1 text-[15px] leading-relaxed text-muted [&:not(:first-of-type)]:mt-3">
+                    {para}
+                  </p>
+                ))}
               </section>
             </div>
 
@@ -159,18 +163,13 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               ))}
             </ol>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((t) => (
-                  <Tag key={t}>{t}</Tag>
-                ))}
-              </div>
-              {project.href && (
+            {project.href && (
+              <div className="mt-6">
                 <a href={project.href} target="_blank" rel="noreferrer" aria-label={`View ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
-                View project <ExternalLink size={15} aria-hidden />
-              </a>
-              )}
-            </div>
+                  View project <ExternalLink size={15} aria-hidden />
+                </a>
+              </div>
+            )}
           </motion.article>
         </motion.div>
       )}

@@ -40,7 +40,7 @@ export function SeoContent() {
           <h3>{p.title}</h3>
           <p>{p.blurb}</p>
           <p>{p.approach}</p>
-          <p>Technologies: {p.tags.join(", ")}</p>
+          <p>Technologies: {(p.stack ?? p.tags).join(", ")}</p>
         </section>
       ))}
 
