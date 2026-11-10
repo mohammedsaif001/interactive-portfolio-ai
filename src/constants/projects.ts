@@ -78,4 +78,19 @@ export const projects = [
       "Access is controlled by role, with login lockout and optional email one-time-code verification, and the app ships through an automated build and deploy pipeline.",
     architecture: ["Browser UI", "Auth and role guards", "API routes", "Database and file storage", "Email and audit records"],
   },
+  {
+    title: "Agent SDK Built From Scratch",
+    blurb: "A small TypeScript library that runs an LLM in a reasoning loop, calls validated tools, hands tasks between agents and screens inputs and outputs.",
+    impact: "Bad tool arguments go back to the model as structured errors, so it can correct itself and retry",
+    tags: ["TypeScript", "OpenAI API", "Zod", "Node.js"],
+    stack: ["TypeScript", "OpenAI API", "Zod", "Node.js", "Multi-agent", "Guardrails"],
+    color: "blue",
+    role: "Sole developer · designed and built the agent runtime, tool layer, multi-agent handoffs and guardrails",
+    problem: "Agent frameworks hide the reasoning loop, tool parsing, retries and safety checks, so it is hard to know what they actually do. Building each piece from scratch makes the behaviour visible and understandable.",
+    approach:
+      // paragraphs are separated by a blank line and rendered as separate paragraphs
+      "Built a runtime that asks the model for one JSON step at a time (think, request a tool, analyse, output), with a cap on loop iterations. Tool arguments are checked against Zod schemas, and invalid arguments or tool failures go back to the model as structured errors so it can retry.\n\n" +
+      "Agents can hand tasks to one another along with the conversation history. Guardrails screen three points: input (prompt injection, PII masking, length limit), tool calls (destructive commands) and output (secret redaction). Also includes a fluent builder API, a logging interceptor and demos that run without an API key.",
+    architecture: ["User input", "Input guardrails", "Model step loop", "Tool or handoff", "Output guardrails", "Final reply"],
+  },
 ] satisfies Project[];

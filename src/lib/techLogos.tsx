@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { Bot, Brain, Database, KeyRound, Layers, Library, Plug, RefreshCw, Radio, Search, Sparkles, Webhook, Workflow, Wrench, type LucideIcon } from "lucide-react";
+import { Bot, Brain, Database, KeyRound, Layers, Library, Plug, RefreshCw, Radio, Search, ShieldCheck, Sparkles, Webhook, Workflow, Wrench, type LucideIcon } from "lucide-react";
 import {
   SiClaude,
   SiDocker,
@@ -27,6 +27,7 @@ import {
   SiSass,
   SiTailwindcss,
   SiTypescript,
+  SiZod,
 } from "react-icons/si";
 import { FaAws, FaCss3, FaLinkedin, FaMicrosoft } from "react-icons/fa6";
 import { BsOpenai } from "react-icons/bs";
@@ -43,6 +44,7 @@ const logos: Record<string, { Icon: IconComponent; color: string }> = {
   html: { Icon: SiHtml5, color: "#E34F26" },
   css: { Icon: FaCss3, color: "#1572B6" },
   typescript: { Icon: SiTypescript, color: "#3178C6" },
+  zod: { Icon: SiZod, color: "#3068B7" },
   javascript: { Icon: SiJavascript, color: "#D9B800" },
   tailwind: { Icon: SiTailwindcss, color: "#06B6D4" },
   redux: { Icon: SiRedux, color: "#764ABC" },
@@ -77,6 +79,8 @@ const logos: Record<string, { Icon: IconComponent; color: string }> = {
 // Concepts with no brand logo get a drawn icon instead.
 const concepts: Record<string, LucideIcon> = {
   rag: Library,
+  guardrails: ShieldCheck,
+  multiagent: Bot,
   agents: Bot,
   aiagents: Bot,
   genai: Sparkles,
