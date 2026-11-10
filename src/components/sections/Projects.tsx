@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Rocket, X, Zap } from "lucide-react";
-import { profile } from "@/data/profile";
-import type { Project } from "@/data/types";
+import { profile } from "@/constants";
+import type { Project } from "@/constants/types";
 import { Sketch, SectionTitle, Tag } from "@/components/ui/Sketch";
 import { CountUp } from "@/components/ui/Motion";
 import { CurvyArrow, FloatIcon } from "@/components/ui/Doodles";
@@ -23,7 +23,7 @@ export function Projects() {
       <p className="-mt-2 mb-4 text-sm text-muted">Tap a project for the full case study.</p>
       <div className="space-y-5">
         {profile.projects.map((p, i) => (
-          <Sketch key={p.title} as="button" onClick={() => setOpen(p)} fill={p.color} seed={40 + i} roughness={1.1} className="group block w-full cursor-pointer text-left transition hover:-translate-y-1 hover:rotate-[-0.4deg]">
+          <Sketch key={p.title} as="button" aria-haspopup="dialog" aria-label={`${p.title}: open case study`} onClick={() => setOpen(p)} fill={p.color} seed={40 + i} roughness={1.1} className="group block w-full cursor-pointer text-left transition hover:-translate-y-1 hover:rotate-[-0.4deg]">
             <div className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <h3 className="font-hand text-3xl font-bold leading-none">{p.title}</h3>
@@ -54,11 +54,35 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
     () => false,
   );
 
+  const dialogRef = useRef<HTMLElement>(null);
+
+  // Escape closes; Tab is kept inside the dialog; focus moves in on open and back to the card on close.
   useEffect(() => {
     if (!project) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
+    const opener = document.activeElement as HTMLElement | null;
+    const focusables = () =>
+      Array.from(dialogRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])') ?? []);
+    focusables()[0]?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") return onClose();
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (!items.length) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      opener?.focus?.();
+    };
   }, [project, onClose]);
 
   if (!mounted) return null;
@@ -76,9 +100,10 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
           onClick={onClose}
         >
           <motion.article
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
-            aria-label={`${project.title} case study`}
+            aria-labelledby="case-study-title"
             initial={{ y: 60, opacity: 0, scale: 0.96 }}
             animate={{ y: 0, opacity: 1, scale: 1 }}
             exit={{ y: 40, opacity: 0 }}
@@ -90,13 +115,13 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
             <div className="flex items-start justify-between gap-4">
               <div>
                 <p className="font-hand text-2xl text-muted">Case study</p>
-                <h2 className="glow font-hand text-5xl font-bold leading-none">
+                <h2 id="case-study-title" className="glow font-hand text-5xl font-bold leading-none">
                   <span className="marker">{project.title}</span>
                 </h2>
                 <p className="mt-2 text-sm font-semibold text-muted">{project.role}</p>
               </div>
               <button onClick={onClose} aria-label="Close case study" className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border-2 border-ink hover:bg-sun">
-                <X size={18} />
+                <X size={18} aria-hidden />
               </button>
             </div>
 
@@ -141,7 +166,7 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
                 ))}
               </div>
               {project.href && (
-                <a href={project.href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
+                <a href={project.href} target="_blank" rel="noreferrer" aria-label={`View ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
                 View project <ExternalLink size={15} aria-hidden />
               </a>
               )}

@@ -1,4 +1,4 @@
-import { profile } from "@/data/profile";
+import { profile } from "@/constants";
 import { TechLogo } from "@/lib/techLogos";
 
 export function SocialLinks({ showHandle = false }: { showHandle?: boolean }) {

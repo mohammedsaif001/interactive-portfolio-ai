@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Compass, LayoutList } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile } from "@/constants";
 import { Sketch } from "@/components/ui/Sketch";
 import { ProfilePhoto } from "@/components/ui/ProfilePhoto";
 import { Typewriter } from "@/components/ui/Motion";

@@ -1,5 +1,6 @@
-import { profile } from "@/data/profile";
-import { faqs, aliases } from "@/lib/seo";
+import { profile } from "@/constants";
+import { aliases } from "@/constants/seo";
+import { faqs } from "@/constants/faqs";
 
 /**
  * Server-rendered, plain-HTML version of the portfolio. The interactive screens only fill in after

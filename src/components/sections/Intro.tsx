@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Brain, Code2, MapPin, Rocket, UserRound } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile } from "@/constants";
 import { Sketch } from "@/components/ui/Sketch";
 import { FloatIcon } from "@/components/ui/Doodles";
 import { Typewriter } from "@/components/ui/Motion";

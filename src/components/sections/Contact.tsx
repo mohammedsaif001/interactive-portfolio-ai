@@ -1,5 +1,5 @@
 import { Download, Mail, Send, Smile } from "lucide-react";
-import { profile } from "@/data/profile";
+import { profile } from "@/constants";
 import { Sketch, SectionTitle } from "@/components/ui/Sketch";
 import { SocialLinks } from "./SocialLinks";
 import { CurvyArrow, FloatIcon } from "@/components/ui/Doodles";
