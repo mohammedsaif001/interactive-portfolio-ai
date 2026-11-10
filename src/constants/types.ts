@@ -8,7 +8,7 @@ export type Job = {
   role: string;
   company: string;
   period: string;
-  plain: string; // plain-language summary for the recruiter view
+  plain?: string; // optional plain-language summary for the recruiter view; omit when it would only repeat `points`
   points: string[];
 };
 export type Project = {

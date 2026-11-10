@@ -26,7 +26,7 @@ export const projects = [
     impact: "Two-model setup: router model + main agent model",
     tags: ["Azure OpenAI", "Agents SDK", "MCP", "Node.js", "Express", "TypeScript"],
     color: "green",
-    role: "Built the assistant end to end, then optimised it with a two-model setup",
+    role: "At Basofa Consulting · built the assistant end to end, then optimised it with a two-model setup",
     problem: "D365 B2B Commerce customers had to go through several storefront screens to check balances, invoices, orders and stock, or to build a cart from a spreadsheet.",
     approach:
       // paragraphs are separated by a blank line and rendered as separate paragraphs
@@ -40,7 +40,7 @@ export const projects = [
     impact: "From approval workflows to an AI assistant",
     tags: ["React", "TypeScript", "D365 Commerce SDK", "SCSS"],
     color: "blue",
-    role: "Front-end engineer · extended the D365 Commerce React SDK for a B2B storefront",
+    role: "At Basofa Consulting · front-end engineer, extended the D365 Commerce React SDK for a B2B storefront",
     problem: "The standard D365 storefront does not cover many B2B needs, such as approvals, quotes, bulk ordering, product configuration, invoices and returns. Business buyers need these in one branded storefront, not in separate tools.",
     approach:
       // paragraphs are separated by a blank line and rendered as separate paragraphs
@@ -55,7 +55,7 @@ export const projects = [
     tags: ["Next.js", "TypeScript", "Material UI", "SWR"],
     stack: ["Next.js", "React", "TypeScript", "Material UI", "SWR", "Redux Toolkit"],
     color: "coral",
-    role: "Built the web interface for onboarding systems, mapping fields and setting matching rules",
+    role: "At Basofa Consulting · built the web interface for onboarding systems, mapping fields and setting matching rules",
     problem: "Each business system stores data in its own format, so matching records between them needed manual setup that was slow and easy to get wrong.",
     approach:
       // paragraphs are separated by a blank line and rendered as separate paragraphs
@@ -70,7 +70,7 @@ export const projects = [
     tags: ["Next.js", "TypeScript", "Azure Cosmos DB", "Tailwind"],
     stack: ["Next.js", "React", "TypeScript", "Azure Cosmos DB", "Azure Blob Storage", "NextAuth", "Tailwind", "Redux Toolkit", "SWR"],
     color: "yellow",
-    role: "Full-stack engineer · built the interface, API, access control and pipeline",
+    role: "At Basofa Consulting · full-stack engineer, built the interface, API, access control and pipeline",
     problem: "Software vendors often share release packages with customers by hand, so nobody can easily tell who holds which version. Customers have no single place to get what they are entitled to or to ask for help.",
     approach:
       // paragraphs are separated by a blank line and rendered as separate paragraphs

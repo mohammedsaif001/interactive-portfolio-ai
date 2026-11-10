@@ -25,12 +25,14 @@ export function SeoContent() {
           <h3>
             {j.role} at {j.company} ({j.period})
           </h3>
-          <p>{j.plain}</p>
-          <ul>
-            {j.points.map((p) => (
-              <li key={p}>{p}</li>
-            ))}
-          </ul>
+          {j.plain && <p>{j.plain}</p>}
+          {j.points.length > 0 && (
+            <ul>
+              {j.points.map((p) => (
+                <li key={p}>{p}</li>
+              ))}
+            </ul>
+          )}
         </section>
       ))}
 
