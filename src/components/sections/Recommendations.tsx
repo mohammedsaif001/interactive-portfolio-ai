@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useMotionValue, useTransform, type PanInfo } from "framer-motion";
 import { ChevronLeft, ChevronRight, ExternalLink, Heart, Quote, Star } from "lucide-react";
 import { profile } from "@/constants";
 import { FloatIcon } from "@/components/ui/Doodles";
@@ -16,13 +16,24 @@ export function Recommendations() {
   const recs = profile.recommendations;
   const [i, setI] = useState(0);
   const [open, setOpen] = useState(false);
+  // +1 when moving forward, -1 when moving back: decides which side the next card slides in from
+  const [dir, setDir] = useState(1);
+  const x = useMotionValue(0);
+  const tilt = useTransform(x, [-220, 0, 220], [-9, -1, 7]);
   const r = recs[i];
   const long = r.quote.length > PREVIEW;
   const shown = open || !long ? r.quote : r.quote.slice(0, PREVIEW).replace(/\s+\S*$/, "").replace(/[\s.,;:!]+$/, "") + "…";
 
-  const go = (n: number) => {
+  const go = (n: number, d = n > i ? 1 : -1) => {
+    setDir(d);
     setI((n + recs.length) % recs.length);
     setOpen(false);
+  };
+
+  // Flashcard swipe: flick the note left for the next one, right for the previous one.
+  const onDragEnd = (_: unknown, info: PanInfo) => {
+    if (info.offset.x < -70 || info.velocity.x < -450) go(i + 1, 1);
+    else if (info.offset.x > 70 || info.velocity.x > 450) go(i - 1, -1);
   };
 
   return (
@@ -35,15 +46,28 @@ export function Recommendations() {
         <TechLogo name="linkedin" size={14} /> {recs.length} recommendations from colleagues, quoted word for word from LinkedIn
       </p>
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" custom={dir}>
         <motion.figure
           key={i}
-          initial={{ opacity: 0, y: 12, rotate: 2 }}
-          animate={{ opacity: 1, y: 0, rotate: -1 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.25 }}
-          className="sticky-note relative border-2 border-ink p-5"
-          style={{ background: colors[i % colors.length] }}
+          custom={dir}
+          variants={{
+            enter: (d: number) => ({ opacity: 0, x: d * 140 }),
+            center: { opacity: 1, x: 0 },
+            exit: (d: number) => ({ opacity: 0, x: d * -140 }),
+          }}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ duration: 0.28, ease: "easeOut" }}
+          // drag the note sideways; vertical scrolling and the whiteboard's own pan/drag are left alone
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.6}
+          onDragEnd={onDragEnd}
+          style={{ x, rotate: tilt, background: colors[i % colors.length] }}
+          aria-roledescription="slide"
+          aria-label={`Recommendation ${i + 1} of ${recs.length}, from ${r.name}`}
+          className="sticky-note nodrag nopan relative cursor-grab border-2 border-ink p-5 active:cursor-grabbing"
         >
           <span className="absolute -top-2 left-1/2 h-4 w-4 -translate-x-1/2 rounded-full border-2 border-ink bg-coral" aria-hidden />
           <Quote size={20} aria-hidden className="mb-1 opacity-60" />
@@ -63,7 +87,9 @@ export function Recommendations() {
         </motion.figure>
       </AnimatePresence>
 
-      <div className="nodrag mt-4 flex items-center justify-between gap-2">
+      <p className="mt-3 text-center text-[11px] font-semibold text-muted">Swipe or drag the note · {i + 1} of {recs.length}</p>
+
+      <div className="nodrag mt-2 flex items-center justify-between gap-2">
         <button onClick={() => go(i - 1)} aria-label="Previous recommendation" className="grid h-9 w-9 place-items-center rounded-full border-2 border-ink bg-card shadow-[2px_2px_0_var(--shadow)]">
           <ChevronLeft size={18} />
         </button>
