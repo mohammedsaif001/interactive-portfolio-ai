@@ -9,11 +9,11 @@ export const faqs: { q: string; a: string }[] = [
   },
   {
     q: "Is Mohammed Saif available for immediate joining?",
-    a: `Yes. Mohammed Saif is a Senior Software Engineer open to immediate joining for remote and Bangalore-based full-stack and GenAI engineering roles. Contact: ${profile.email}.`,
+    a: `Yes. Mohammed Saif is a Senior Software Engineer open to immediate joining for full-stack and GenAI engineering roles, either remote or hybrid in Bangalore. Contact: ${profile.email}.`,
   },
   {
     q: "Where is Mohammed Saif based?",
-    a: "He is based in Bengaluru (Bangalore), Karnataka, India, and is open to remote work.",
+    a: "He is based in Bengaluru (Bangalore), Karnataka, India, and is open to remote work as well as hybrid roles in Bangalore.",
   },
   {
     q: "What does Mohammed Saif do?",
