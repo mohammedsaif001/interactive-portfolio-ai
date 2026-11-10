@@ -234,7 +234,8 @@ function Board({ onOverview }: { onOverview: () => void }) {
             <button
               key={s.id}
               onClick={() => flyTo(s.id)}
-              aria-current={active === s.id}
+              aria-current={active === s.id ? "true" : undefined}
+              aria-label={`Go to ${s.label}`}
               className={`relative flex items-center gap-1.5 rounded-full border-2 border-ink px-3.5 py-1.5 text-sm font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5 ${active === s.id ? "bg-sun" : "bg-card"}`}
             >
               {(() => {
@@ -255,6 +256,7 @@ function Board({ onOverview }: { onOverview: () => void }) {
           <ThemeToggle />
           <button
             onClick={onOverview}
+            aria-label="Switch to the quick overview page"
             className="flex h-10 items-center gap-2 rounded-xl border-2 border-ink bg-mint px-4 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5"
           >
             <LayoutList size={16} aria-hidden /> Quick overview
@@ -266,7 +268,7 @@ function Board({ onOverview }: { onOverview: () => void }) {
         <p className="pointer-events-none rounded-full border-2 border-ink bg-card px-4 py-1 text-xs font-semibold shadow-[2px_2px_0_var(--shadow)]">
           Drag frames to rearrange · drag a right edge to resize · Ctrl + scroll to zoom
         </p>
-        <button onClick={resetLayout} className="flex items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3 py-1 text-xs font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
+        <button onClick={resetLayout} aria-label="Reset the frame layout to default" className="flex items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3 py-1 text-xs font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
           <RotateCcw size={13} aria-hidden /> Reset layout
         </button>
       </div>

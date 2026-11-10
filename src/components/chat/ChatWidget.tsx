@@ -113,7 +113,9 @@ export function ChatWidget() {
           initial={{ y: 28, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.22, ease: "easeOut" }}
+          role="dialog"
           aria-label="Ask about me"
+          onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
           // phone: a bottom sheet across the full width; sm and up: the small floating panel
           className="mb-3 flex h-[min(520px,70dvh)] w-[min(380px,calc(100vw-2rem))] flex-col overflow-hidden rounded-2xl border-2 border-ink bg-card shadow-[5px_5px_0_var(--shadow)] max-sm:fixed max-sm:inset-x-0 max-sm:bottom-0 max-sm:mb-0 max-sm:h-[82dvh] max-sm:w-auto max-sm:rounded-b-none max-sm:rounded-t-3xl max-sm:border-x-0 max-sm:border-b-0 max-sm:shadow-[0_-6px_0_var(--shadow)]"
         >
@@ -132,11 +134,11 @@ export function ChatWidget() {
               </div>
             </div>
             <button onClick={() => setOpen(false)} aria-label="Close chat" className="rounded-md p-1 hover:bg-ink/10">
-              <X size={18} />
+              <X size={18} aria-hidden />
             </button>
           </header>
 
-          <div className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(color-mix(in_srgb,var(--ink)_16%,transparent)_0.8px,transparent_0.8px)] [background-size:16px_16px] bg-fixed p-4" role="log" aria-live="polite">
+          <div className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(color-mix(in_srgb,var(--ink)_16%,transparent)_0.8px,transparent_0.8px)] [background-size:16px_16px] bg-fixed p-4" role="log" aria-live="polite" aria-label="Conversation" aria-busy={busy}>
             {msgs.map((m, i) => {
               const user = m.role === "user";
               return (
@@ -157,6 +159,7 @@ export function ChatWidget() {
                       {m.text}
                     </p>
                     <span className="mt-1 px-1 text-[10px] text-muted">
+                      <span className="sr-only">{user ? "You said, " : "Reply, "}</span>
                       {user ? "You" : profile.name.split(" ")[0]}{m.time && ` · ${m.time}`}
                     </span>
                   </div>
@@ -190,7 +193,7 @@ export function ChatWidget() {
               className="min-w-0 flex-1 rounded-full border-2 border-ink bg-card px-4 py-2 text-sm outline-none focus:bg-sun/30"
             />
             <button type="submit" aria-label="Send" disabled={!input.trim() || busy} className="grid size-11 place-items-center rounded-full border-2 border-ink bg-coral shadow-[2px_2px_0_var(--shadow)] transition enabled:hover:-translate-y-0.5 disabled:opacity-50">
-              <Send size={16} />
+              <Send size={16} aria-hidden />
             </button>
           </form>
         </motion.section>
@@ -199,6 +202,8 @@ export function ChatWidget() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Ask me anything"}
+        aria-expanded={open}
+        aria-haspopup="dialog"
         className={`ml-auto flex items-center gap-2 rounded-full border-2 border-ink bg-coral p-3 font-bold shadow-[4px_4px_0_var(--shadow)] sm:px-4 transition hover:-translate-y-0.5 ${open ? "max-sm:hidden" : ""}`}
       >
         <MessageCircle size={20} aria-hidden />

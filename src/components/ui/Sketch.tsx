@@ -69,17 +69,20 @@ type SketchProps = {
   as?: "div" | "a" | "li" | "article" | "button";
   href?: string;
   onClick?: () => void;
+  /** Extra accessible-name / state attributes forwarded to the root element (link or button). */
+  "aria-label"?: string;
+  "aria-haspopup"?: "dialog";
 };
 
 /**
  * Hand-drawn card. When rendered as a link or button it is tagged `data-card`, which lets the global
  * hover rules give large cards a gentler scale than small buttons.
  */
-export function Sketch({ children, className = "", fill = "card", seed = 7, roughness = 1.3, style, as = "div", href, onClick }: SketchProps) {
+export function Sketch({ children, className = "", fill = "card", seed = 7, roughness = 1.3, style, as = "div", href, onClick, ...aria }: SketchProps) {
   const Tag = as as "div";
   const extra = as === "a" ? { href, target: "_blank", rel: "noreferrer" } : as === "button" ? { type: "button" as const, onClick } : {};
   return (
-    <Tag className={`relative ${className}`} style={style} data-card={as === "a" || as === "button" ? "" : undefined} {...extra}>
+    <Tag className={`relative ${className}`} style={style} data-card={as === "a" || as === "button" ? "" : undefined} {...extra} {...aria}>
       <RoughBorder fill={fill} seed={seed} roughness={roughness} />
       <div className="relative">{children}</div>
     </Tag>
