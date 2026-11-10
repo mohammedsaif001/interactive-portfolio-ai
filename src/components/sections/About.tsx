@@ -1,49 +1,51 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Brain, LayoutDashboard, Sparkles, UserRound, Users, type LucideIcon } from "lucide-react";
+import { Mail, Sparkles, UserRound } from "lucide-react";
 import { profile } from "@/constants";
 import { Sketch, SectionTitle } from "@/components/ui/Sketch";
 import { FloatIcon } from "@/components/ui/Doodles";
 
-const icons: Record<string, LucideIcon> = { ai: Brain, frontend: LayoutDashboard, lead: Users };
-const colors = ["coral", "blue", "green"] as const;
 
-/** "About me": one short summary and three things a recruiter can scan in seconds. */
+/** "About me": a short professional intro, then an invitation for recruiters. */
 export function About() {
-  const { summary, strengths } = profile.about;
+  const { story, closing } = profile.about;
   return (
     <Sketch fill="card" seed={31} className="p-6 sm:p-8">
       <FloatIcon icon={Sparkles} color="yellow" className="-right-5 -top-5" rotate={12} />
       <SectionTitle icon={UserRound} color="blue">
         About me
       </SectionTitle>
-      <p className="text-[15px] leading-relaxed">{summary}</p>
+      <div className="space-y-3 text-[15px] leading-relaxed">
+        {story.map((para, i) => (
+          <motion.p
+            key={i}
+            initial={{ opacity: 0, y: 8 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ delay: i * 0.08, duration: 0.4 }}
+          >
+            {para}
+          </motion.p>
+        ))}
+      </div>
 
-      <ul className="mt-5 space-y-3">
-        {strengths.map((s, i) => {
-          const Icon = icons[s.icon] ?? Sparkles;
-          return (
-            <motion.li
-              key={s.title}
-              initial={{ opacity: 0, x: -10 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={{ delay: i * 0.1, duration: 0.45 }}
-              className="flex items-center gap-3 rounded-xl border-2 border-ink p-3"
-              style={{ background: `var(--${colors[i % 3]})` }}
-            >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full border-2 border-ink bg-card">
-                <Icon size={20} aria-hidden />
-              </span>
-              <span>
-                <span className="font-hand block text-2xl font-bold leading-none">{s.title}</span>
-                <span className="text-sm leading-snug">{s.text}</span>
-              </span>
-            </motion.li>
-          );
-        })}
-      </ul>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.5 }}
+        transition={{ duration: 0.4 }}
+        className="mt-6 rounded-xl border-2 border-dashed border-ink bg-mint p-4"
+      >
+        <p className="font-hand text-2xl font-bold leading-none">{closing.title}</p>
+        <p className="mt-1.5 text-sm leading-relaxed">{closing.text}</p>
+        <a
+          href={`mailto:${profile.email}`}
+          className="mt-3 inline-flex items-center gap-2 rounded-lg border-2 border-ink bg-card px-3 py-1.5 text-sm font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5"
+        >
+          <Mail size={15} aria-hidden /> {profile.email}
+        </a>
+      </motion.div>
     </Sketch>
   );
 }
