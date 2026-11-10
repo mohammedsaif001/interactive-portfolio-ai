@@ -17,7 +17,8 @@ export type Project = {
   impact: string;
   tags: string[]; // short list shown on the card
   stack?: string[]; // fuller list for the case study "Built with" row; defaults to `tags`
-  href?: string; // omit for private / employer work: the "View project" button is hidden
+  repo?: string; // public GitHub repository: shows a "GitHub" button in the case study
+  live?: string; // deployed app: shows a "Live demo" button. Omit either for private / employer work.
   color: Color;
   role: string;
   problem: string;

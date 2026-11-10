@@ -6,8 +6,9 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Rocket, X, Zap } from "lucide-react";
 import { profile } from "@/constants";
 import type { Project } from "@/constants/types";
-import { Sketch, SectionTitle, Tag } from "@/components/ui/Sketch";
+import { Sketch, SectionTitle } from "@/components/ui/Sketch";
 import { TechChip } from "@/components/ui/TechChip";
+import { TechLogo } from "@/lib/techLogos";
 import { CurvyArrow, FloatIcon } from "@/components/ui/Doodles";
 
 export function Projects() {
@@ -34,7 +35,7 @@ export function Projects() {
               <p className="mt-2 text-sm font-bold">★ {p.impact}</p>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {p.tags.map((t) => (
-                  <Tag key={t}>{t}</Tag>
+                  <TechChip key={t} name={t} />
                 ))}
               </div>
             </div>
@@ -164,11 +165,18 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               ))}
             </ol>
 
-            {project.href && (
-              <div className="mt-6">
-                <a href={project.href} target="_blank" rel="noreferrer" aria-label={`View ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
-                  View project <ExternalLink size={15} aria-hidden />
-                </a>
+            {(project.live || project.repo) && (
+              <div className="mt-6 flex flex-wrap gap-3">
+                {project.live && (
+                  <a href={project.live} target="_blank" rel="noreferrer" aria-label={`Open the live ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
+                    Live demo <ExternalLink size={15} aria-hidden />
+                  </a>
+                )}
+                {project.repo && (
+                  <a href={project.repo} target="_blank" rel="noreferrer" aria-label={`View the ${project.title} code on GitHub (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-white px-4 py-2 text-sm font-bold text-[#1f2430] shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
+                    <TechLogo name="github" size={16} /> GitHub
+                  </a>
+                )}
               </div>
             )}
           </motion.article>
