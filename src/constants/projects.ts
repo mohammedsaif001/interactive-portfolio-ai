@@ -85,7 +85,7 @@ export const projects = [
     tags: ["TypeScript", "OpenAI API", "Zod", "Node.js"],
     stack: ["TypeScript", "OpenAI API", "Zod", "Node.js", "Multi-agent", "Guardrails"],
     color: "blue",
-    role: "Sole developer · designed and built the agent runtime, tool layer, multi-agent handoffs and guardrails",
+    role: "Personal project · a from-scratch agent runtime with validated tools, agent handoffs and guardrails",
     problem: "Agent frameworks hide the reasoning loop, tool parsing, retries and safety checks, so it is hard to know what they actually do. Building each piece from scratch makes the behaviour visible and understandable.",
     approach:
       // paragraphs are separated by a blank line and rendered as separate paragraphs
