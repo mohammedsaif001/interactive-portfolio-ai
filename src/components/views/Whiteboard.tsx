@@ -49,7 +49,7 @@ const content: Record<SectionId, ReactNode> = {
 
 const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 520, recs: 460, skills: 760, contact: 560 };
 // Approximate rendered heights, only so the minimap can draw frames; real sizes are measured by React Flow.
-const heights: Record<SectionId, number> = { intro: 520, about: 430, experience: 600, projects: 660, recs: 581, skills: 1010, contact: 297 };
+const heights: Record<SectionId, number> = { intro: 520, about: 430, experience: 600, projects: 1250, recs: 640, skills: 1010, contact: 297 };
 
 const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1 };
 
@@ -109,16 +109,17 @@ const nodeTypes = { frame: FrameNode };
 const edgeTypes = { flow: FlowEdge };
 
 // Gaps between frames are kept around 240px so connector labels stay clear of the cards, and the
-// second row starts well below the tallest frame in the first row (experience) so nothing overlaps.
+// second row starts well below the tallest frame in the first row (projects, ~1250px with five cards) so nothing
+// overlaps. If you add more projects, push the second row (recs, skills, contact) down by about 220px per card.
 // Reading path snakes: intro -> story -> experience -> projects, down to kind words, left to skills, left to contact.
 const positions: Record<SectionId, { x: number; y: number }> = {
   intro: { x: 0, y: 0 },
   about: { x: 960, y: -60 },
   experience: { x: 1720, y: -110 },
   projects: { x: 2500, y: -110 },
-  recs: { x: 2530, y: 900 },
-  skills: { x: 1530, y: 860 },
-  contact: { x: 730, y: 920 },
+  recs: { x: 2530, y: 1420 },
+  skills: { x: 1530, y: 1380 },
+  contact: { x: 730, y: 1440 },
 };
 
 // Frames start at a fixed width (so the resizer can change it) but never get a fixed height:
