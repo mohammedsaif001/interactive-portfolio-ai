@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, useState, type ReactNode } from "react";
 import {
   BaseEdge,
   EdgeLabelRenderer,
@@ -47,9 +47,9 @@ const content: Record<SectionId, ReactNode> = {
   contact: <Contact />,
 };
 
-const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 520, recs: 460, skills: 760, contact: 560 };
+const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 540, projects: 1000, recs: 460, skills: 760, contact: 560 };
 // Approximate rendered heights, only so the minimap can draw frames; real sizes are measured by React Flow.
-const heights: Record<SectionId, number> = { intro: 520, about: 430, experience: 600, projects: 660, recs: 581, skills: 1010, contact: 297 };
+const heights: Record<SectionId, number> = { intro: 418, about: 586, experience: 695, projects: 850, recs: 504, skills: 908, contact: 480 };
 
 const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1 };
 
@@ -60,8 +60,10 @@ function FrameNode({ data }: NodeProps<Node<{ id: SectionId }>>) {
     // inside a frame unclickable. `group` lets the resize handle fade in on hover.
     <div className="group pointer-events-auto w-full cursor-grab active:cursor-grabbing">
       {/* Right-edge handle. Horizontal only, because height must follow the content. nodrag/nopan keep
-          the gesture from also dragging the frame or panning the board. */}
-      <NodeResizeControl position="right" resizeDirection="horizontal" minWidth={420} maxWidth={1300} className="nodrag nopan" style={{ background: "transparent", border: "none", width: 22, height: "100%", right: -11, cursor: "ew-resize", zIndex: 6 }}>
+          the gesture from also dragging the frame or panning the board. It is a small fixed-size pill, not
+          full height: React Flow scales the control with zoom, so a 100%-tall strip stuck out far past the
+          card when the board was zoomed out. */}
+      <NodeResizeControl position="right" resizeDirection="horizontal" minWidth={420} maxWidth={1300} className="nodrag nopan" style={{ background: "transparent", border: "none", width: 22, height: 64, top: "50%", marginTop: -32, right: -11, cursor: "ew-resize", zIndex: 6 }}>
         <span className="absolute left-1/2 top-1/2 grid h-12 w-5 opacity-0 transition-opacity group-hover:opacity-100 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-ink bg-card shadow-[2px_2px_0_var(--shadow)]" title="Drag to resize">
           <GripVertical size={14} aria-hidden />
         </span>
@@ -72,6 +74,15 @@ function FrameNode({ data }: NodeProps<Node<{ id: SectionId }>>) {
       <Handle id="sr" type="source" position={Position.Right} style={hidden} />
       <Handle id="sb" type="source" position={Position.Bottom} style={hidden} />
       <Handle id="sl" type="source" position={Position.Left} style={hidden} />
+      {data.id === "intro" && (
+        <div className="font-hand pointer-events-none absolute -bottom-10 -left-16 z-[5] flex -rotate-6 items-center gap-1 whitespace-nowrap text-2xl font-bold text-accent">
+          start here
+          <svg aria-hidden width="38" height="30" viewBox="0 0 38 30" fill="none" className="wobble mt-[-14px]">
+            <path d="M3 27C10 22 14 12 32 4" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" />
+            <path d="M22 3l11 1-4 10" stroke="currentColor" strokeWidth="2.8" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      )}
       {content[data.id]}
     </div>
   );
@@ -108,17 +119,21 @@ function FlowEdge({ id, sourceX, sourceY, targetX, targetY, sourcePosition, targ
 const nodeTypes = { frame: FrameNode };
 const edgeTypes = { flow: FlowEdge };
 
-// Gaps between frames are kept around 240px so connector labels stay clear of the cards, and the
-// second row starts well below the tallest frame in the first row (experience) so nothing overlaps.
-// Reading path snakes: intro -> story -> experience -> projects, down to kind words, left to skills, left to contact.
+// A "]" path: the top row runs left to right, the path drops down the right edge, and the bottom row runs
+// back right to left. Gaps between frames are about 240px so connector labels stay clear of the cards.
+//   intro -> about -> skills -> experience
+//                                  |
+//                  contact <- recs <- projects
+// Projects is wide (two columns of cards) so the board stays landscape. Frames in the top row are centred on
+// the same line so the arrows run straight.
 const positions: Record<SectionId, { x: number; y: number }> = {
-  intro: { x: 0, y: 0 },
-  about: { x: 960, y: -60 },
-  experience: { x: 1720, y: -110 },
-  projects: { x: 2500, y: -110 },
-  recs: { x: 2530, y: 900 },
-  skills: { x: 1530, y: 860 },
-  contact: { x: 730, y: 920 },
+  intro: { x: 0, y: 272 },
+  about: { x: 960, y: 188 },
+  skills: { x: 1720, y: 27 },
+  experience: { x: 2720, y: 134 },
+  projects: { x: 2260, y: 1049 },
+  recs: { x: 1560, y: 1222 },
+  contact: { x: 760, y: 1234 },
 };
 
 // Frames start at a fixed width (so the resizer can change it) but never get a fixed height:
@@ -147,12 +162,16 @@ const edge = (id: string, source: SectionId, sh: string, target: SectionId, th: 
 
 const edges: Edge[] = [
   edge("e1", "intro", "sr", "about", "tl", "about me"),
-  edge("e1b", "about", "sr", "experience", "tl", "my work"),
-  edge("e2", "experience", "sr", "projects", "tl", "what I built"),
-  edge("e3", "projects", "sb", "recs", "tt", "what people say"),
-  edge("e4", "recs", "sl", "skills", "tr", "how I do it"),
-  edge("e5", "skills", "sl", "contact", "tr", "let's talk"),
+  edge("e2", "about", "sr", "skills", "tl", "my toolkit"),
+  edge("e3", "skills", "sr", "experience", "tl", "my work"),
+  edge("e4", "experience", "sb", "projects", "tt", "what I built"),
+  edge("e5", "projects", "sl", "recs", "tr", "what people say"),
+  edge("e6", "recs", "sl", "contact", "tr", "let's talk"),
 ];
+
+const FLY_MS = 650;
+const RESET_MS = 800;
+const easeInOut = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
 const miniColors = ["var(--yellow)", "var(--blue)", "var(--coral)", "var(--green)"];
 
@@ -169,15 +188,54 @@ function Board({ onOverview }: { onOverview: () => void }) {
       const node = rf.getNode(id);
       if (!node) return;
       const bounds = rf.getNodesBounds([node]);
-      rf.fitBounds(bounds, { duration: 900, padding: 0.12 });
+      // "linear" glides straight to the target. The default ("smooth") zooms out and back in along an arc,
+      // which takes noticeably longer to read as arriving on a board this wide.
+      rf.fitBounds(bounds, { duration: FLY_MS, padding: 0.12, ease: easeInOut, interpolate: "linear" });
     },
     [rf],
   );
 
-  // Put every frame back in its default place and re-frame the whole board.
+  // Put every frame back in its default place and re-frame the whole board, both animated together: the frames
+  // glide home (position and width) while the camera glides to where the finished layout will be.
+  const raf = useRef(0);
+  useEffect(() => () => cancelAnimationFrame(raf.current), []);
   const resetLayout = useCallback(() => {
-    setNodes(initialNodes);
-    setTimeout(() => rf.fitView({ duration: 800, padding: 0.1 }), 60);
+    cancelAnimationFrame(raf.current);
+    const from = new Map(rf.getNodes().map((n) => [n.id, { x: n.position.x, y: n.position.y, w: n.width ?? n.measured?.width ?? widths[n.id as SectionId] }]));
+    const target = new Map(initialNodes.map((n) => [n.id, { x: n.position.x, y: n.position.y, w: n.width ?? widths[n.id as SectionId] }]));
+
+    // bounds of the finished layout, from the known default frame sizes
+    const box = initialNodes.reduce(
+      (b, n) => {
+        const t = target.get(n.id)!;
+        return { x1: Math.min(b.x1, t.x), y1: Math.min(b.y1, t.y), x2: Math.max(b.x2, t.x + t.w), y2: Math.max(b.y2, t.y + heights[n.id as SectionId]) };
+      },
+      { x1: Infinity, y1: Infinity, x2: -Infinity, y2: -Infinity },
+    );
+    // fit that box between the floating top bar and bottom hint bar (fitBounds only takes a single ratio)
+    const [pt, pb, pl, pr] = [96, 84, 32, 32];
+    const bw = box.x2 - box.x1;
+    const bh = box.y2 - box.y1;
+    const zoom = Math.min((window.innerWidth - pl - pr) / bw, (window.innerHeight - pt - pb) / bh, 1);
+    const x = pl + (window.innerWidth - pl - pr - bw * zoom) / 2 - box.x1 * zoom;
+    const y = pt + (window.innerHeight - pt - pb - bh * zoom) / 2 - box.y1 * zoom;
+    rf.setViewport({ x, y, zoom }, { duration: RESET_MS, ease: easeInOut, interpolate: "linear" });
+
+    const t0 = performance.now();
+    const step = (now: number) => {
+      const t = Math.min(1, (now - t0) / RESET_MS);
+      const e = easeInOut(t);
+      setNodes((prev) =>
+        prev.map((n) => {
+          const f = from.get(n.id);
+          const g = target.get(n.id);
+          if (!f || !g) return n;
+          return { ...n, position: { x: f.x + (g.x - f.x) * e, y: f.y + (g.y - f.y) * e }, width: f.w + (g.w - f.w) * e };
+        }),
+      );
+      if (t < 1) raf.current = requestAnimationFrame(step);
+    };
+    raf.current = requestAnimationFrame(step);
   }, [rf, setNodes]);
 
   return (
@@ -198,6 +256,10 @@ function Board({ onOverview }: { onOverview: () => void }) {
         nodesDraggable
         /* ignore tiny movements so a click on a card is never mistaken for a drag */
         nodeDragThreshold={4}
+        /* double-click (or double-tap) a frame to zoom onto it and highlight it in the top nav; the
+           default double-click-to-zoom-in is turned off so the two do not fight */
+        zoomOnDoubleClick={false}
+        onNodeDoubleClick={(_, node) => flyTo(node.id as SectionId)}
         nodesConnectable={false}
         elementsSelectable={false}
         panOnScroll
@@ -266,7 +328,7 @@ function Board({ onOverview }: { onOverview: () => void }) {
 
       <div className="absolute bottom-4 left-1/2 hidden -translate-x-1/2 items-center gap-2 md:flex">
         <p className="pointer-events-none rounded-full border-2 border-ink bg-card px-4 py-1 text-xs font-semibold shadow-[2px_2px_0_var(--shadow)]">
-          Drag frames to rearrange · drag a right edge to resize · Ctrl + scroll to zoom
+          Double-click a frame to focus it · drag to rearrange · Ctrl + scroll to zoom
         </p>
         <button onClick={resetLayout} aria-label="Reset the frame layout to default" className="flex items-center gap-1.5 rounded-full border-2 border-ink bg-card px-3 py-1 text-xs font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
           <RotateCcw size={13} aria-hidden /> Reset layout

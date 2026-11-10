@@ -22,7 +22,7 @@ export const structuredData = {
       address: { "@type": "PostalAddress", addressLocality: "Bengaluru", addressRegion: "Karnataka", addressCountry: "IN" },
       homeLocation: { "@type": "Place", name: "Bengaluru, Karnataka, India" },
       alumniOf: { "@type": "CollegeOrUniversity", name: "Presidency University", address: { "@type": "PostalAddress", addressLocality: "Bengaluru", addressCountry: "IN" } },
-      worksFor: { "@type": "Organization", name: "BASOFA" },
+      worksFor: { "@type": "Organization", name: "Basofa Consulting Private Limited" },
       knowsAbout: profile.skills.flatMap((s) => s.items),
       sameAs: profile.socials.map((s) => s.href),
     },

@@ -4,28 +4,30 @@ import type { Job } from "./types";
 export const experience = [
   {
     role: "Senior Software Engineer",
-    company: "BASOFA (Microsoft Certified Partner)",
+    company: "Basofa Consulting Private Limited (Microsoft Certified Partner)",
     period: "Nov 2024 to Present",
     plain: "Designs how AI fits into Microsoft D365 Commerce, and builds the storefront experiences on top of it.",
     points: [
-      "Designing how LLMs plug into D365 Commerce: intent parsing, RAG and MCP connections",
-      "Built a dual-agent chat assistant (tables and charts) on Azure OpenAI with real-time updates",
-      "Extended the D365 Commerce React SDK with 6 custom storefront modules",
-      "Lead sprint planning, code reviews and mentoring",
+      "Architected the AI assistant for D365 B2B Commerce on Azure OpenAI: about 30 tools over live account, invoice, order and stock data, also exposed as an MCP server",
+      "Cut LLM cost with a router model that loads only the tool groups each request needs, plus prompt caching, with LLM-judge evals guarding quality",
+      "Own the custom B2B storefront on the D365 Commerce React SDK: 6 custom modules, a streaming chat assistant and an Azure AI Search configurator",
+      "Delivered a financial reconciliation front end and a software delivery portal, end to end",
+      "Run sprint planning and code reviews, and mentor engineers",
     ],
   },
   {
     role: "Software Engineer",
     company: "Aarabhya Systems Pvt Ltd.",
     period: "Apr 2023 to Nov 2024",
-    plain: "Built the user interface for real-time gaming platforms.",
-    points: ["Built real-time gaming UIs with Next.js, Tailwind and GSAP", "Shipped JWT auth flows and led a responsive UI redesign"],
+    points: [
+      "Brought a medical-device training application to life with a mannequin animated in GSAP from live socket data",
+      "Owned the front end of a Next.js platform with a 7-level role hierarchy, where each level adds, removes and monitors the users beneath it",
+    ],
   },
   {
     role: "Software Engineer",
     company: "Nviera Technologies",
     period: "Jul 2022 to Feb 2023",
-    plain: "First engineering role: building reusable front-end components in an agile team.",
-    points: ["Built reusable React and Redux components in an agile team"],
+    points: [],
   },
 ] satisfies Job[];

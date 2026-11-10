@@ -59,11 +59,14 @@ export function ChatWidget() {
   const [msgs, setMsgs] = useState<Msg[]>([
     { role: "bot", text: chatGreeting(profile.name.split(" ")[0]), time: "" },
   ]);
-  const endRef = useRef<HTMLDivElement>(null);
+  const logRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Scroll only the message list. scrollIntoView would also scroll the panel around it (it is overflow-hidden),
+  // which pushed the header and messages out of view on phones and left a blank sheet.
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    const log = logRef.current;
+    log?.scrollTo({ top: log.scrollHeight, behavior: open ? "smooth" : "auto" });
   }, [msgs, busy, open]);
 
   // Keep the cursor in the box on desktop (not on phones, where it would pop the keyboard up).
@@ -139,7 +142,7 @@ export function ChatWidget() {
             </button>
           </header>
 
-          <div className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(color-mix(in_srgb,var(--ink)_16%,transparent)_0.8px,transparent_0.8px)] [background-size:16px_16px] bg-fixed p-4" role="log" aria-live="polite" aria-label="Conversation" aria-busy={busy}>
+          <div ref={logRef} className="flex-1 space-y-4 overflow-y-auto bg-[radial-gradient(color-mix(in_srgb,var(--ink)_16%,transparent)_0.8px,transparent_0.8px)] [background-size:16px_16px] bg-fixed p-4" role="log" aria-live="polite" aria-label="Conversation" aria-busy={busy}>
             {msgs.map((m, i) => {
               const user = m.role === "user";
               return (
@@ -182,7 +185,6 @@ export function ChatWidget() {
                 ))}
               </div>
             )}
-            <div ref={endRef} />
           </div>
 
           <form onSubmit={onSubmit} className="flex gap-2 border-t-2 border-ink bg-card p-3">

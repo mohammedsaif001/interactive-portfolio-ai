@@ -28,8 +28,9 @@ export function Contact({ hideTitle = false }: { hideTitle?: boolean }) {
         </SectionTitle>
       )}
       <p className="mb-5 text-[15px] leading-relaxed">
-        {profile.availability}. {profile.resumeHref ? "Grab my resume, or say hi." : "Say hi."}
+        I&apos;m open to <strong>senior full-stack and GenAI engineering roles</strong>, working <strong>remote</strong> or <strong>hybrid in Bangalore</strong>. If you&apos;re hiring a senior engineer, building something with AI or a commerce platform, or know someone who needs a developer, I&apos;d love to hear from you. Pass my details along, I&apos;d really appreciate it.
       </p>
+      <p className="mb-5 text-[15px] font-semibold">{profile.resumeHref ? "Grab my resume, or drop me a line." : "Drop me a line, I reply fast."}</p>
       <div className="flex flex-wrap items-center gap-4">
         <ResumeButton />
         {/* the doodle hangs off this wrapper, so it stays pointed at the email button however the row wraps */}

@@ -1,5 +1,5 @@
 import type { ComponentType } from "react";
-import { Bot, Brain, Database, Library, Plug, Search, Sparkles, Webhook, Workflow, Wrench, type LucideIcon } from "lucide-react";
+import { Bot, Brain, Database, KeyRound, Layers, Library, Plug, RefreshCw, Radio, Search, ShieldCheck, Sparkles, Webhook, Workflow, Wrench, type LucideIcon } from "lucide-react";
 import {
   SiClaude,
   SiDocker,
@@ -27,8 +27,9 @@ import {
   SiSass,
   SiTailwindcss,
   SiTypescript,
+  SiZod,
 } from "react-icons/si";
-import { FaAws, FaCss3, FaLinkedin } from "react-icons/fa6";
+import { FaAws, FaCss3, FaLinkedin, FaMicrosoft } from "react-icons/fa6";
 import { BsOpenai } from "react-icons/bs";
 import { VscAzure, VscAzureDevops } from "react-icons/vsc";
 
@@ -43,6 +44,7 @@ const logos: Record<string, { Icon: IconComponent; color: string }> = {
   html: { Icon: SiHtml5, color: "#E34F26" },
   css: { Icon: FaCss3, color: "#1572B6" },
   typescript: { Icon: SiTypescript, color: "#3178C6" },
+  zod: { Icon: SiZod, color: "#3068B7" },
   javascript: { Icon: SiJavascript, color: "#D9B800" },
   tailwind: { Icon: SiTailwindcss, color: "#06B6D4" },
   redux: { Icon: SiRedux, color: "#764ABC" },
@@ -71,11 +73,14 @@ const logos: Record<string, { Icon: IconComponent; color: string }> = {
   claude: { Icon: SiClaude, color: "#D97757" },
   openai: { Icon: BsOpenai, color: DARK },
   mcp: { Icon: SiModelcontextprotocol, color: DARK },
+  d365: { Icon: FaMicrosoft, color: "#00A4EF" },
 };
 
 // Concepts with no brand logo get a drawn icon instead.
 const concepts: Record<string, LucideIcon> = {
   rag: Library,
+  guardrails: ShieldCheck,
+  multiagent: Bot,
   agents: Bot,
   aiagents: Bot,
   genai: Sparkles,
@@ -85,6 +90,10 @@ const concepts: Record<string, LucideIcon> = {
   vectorsearch: Search,
   restapis: Webhook,
   eventdriven: Plug,
+  signalr: Radio,
+  nextauth: KeyRound,
+  swr: RefreshCw,
+  fullstack: Layers,
 };
 
 // Different spellings of the same technology.
@@ -106,6 +115,17 @@ const aliases: Record<string, string> = {
   mui: "materialui",
   openaiapi: "openai",
   shadcnui: "shadcn",
+  scss: "sass",
+  agentssdk: "openai", // the OpenAI Agents SDK
+  openaiagentssdk: "openai",
+  d365commercesdk: "d365",
+  d365commerce: "d365",
+  dynamics365: "d365",
+  apidesign: "restapis",
+  azurecosmosdb: "azure",
+  cosmosdb: "azure",
+  azureblobstorage: "azure",
+  azureaisearch: "azure",
 };
 
 const key = (name: string) => {

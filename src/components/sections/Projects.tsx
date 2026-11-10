@@ -6,22 +6,24 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, ExternalLink, Rocket, X, Zap } from "lucide-react";
 import { profile } from "@/constants";
 import type { Project } from "@/constants/types";
-import { Sketch, SectionTitle, Tag } from "@/components/ui/Sketch";
-import { CountUp } from "@/components/ui/Motion";
+import { Sketch, SectionTitle } from "@/components/ui/Sketch";
+import { TechChip } from "@/components/ui/TechChip";
+import { TechLogo } from "@/lib/techLogos";
 import { CurvyArrow, FloatIcon } from "@/components/ui/Doodles";
 
 export function Projects() {
   const [open, setOpen] = useState<Project | null>(null);
 
   return (
-    <Sketch seed={31} className="p-6 sm:p-8">
+    <Sketch seed={31} className="@container p-6 sm:p-8">
       <FloatIcon icon={Zap} color="yellow" className="-right-5 -top-5" rotate={12} />
       <CurvyArrow label="click one!" className="right-5 top-12" />
       <SectionTitle icon={Rocket} color="blue">
         Things I&apos;ve built
       </SectionTitle>
       <p className="-mt-2 mb-4 text-sm text-muted">Tap a project for the full case study.</p>
-      <div className="space-y-5">
+      {/* one column when narrow, two when the frame is resized wide (container query, so it follows the frame, not the screen) */}
+      <div className="grid gap-5 @2xl:grid-cols-2">
         {profile.projects.map((p, i) => (
           <Sketch key={p.title} as="button" aria-haspopup="dialog" aria-label={`${p.title}: open case study`} onClick={() => setOpen(p)} fill={p.color} seed={40 + i} roughness={1.1} className="group block w-full cursor-pointer text-left transition hover:-translate-y-1 hover:rotate-[-0.4deg]">
             <div className="p-4">
@@ -33,7 +35,7 @@ export function Projects() {
               <p className="mt-2 text-sm font-bold">★ {p.impact}</p>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {p.tags.map((t) => (
-                  <Tag key={t}>{t}</Tag>
+                  <TechChip key={t} name={t} iconOnly />
                 ))}
               </div>
             </div>
@@ -114,7 +116,19 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
           >
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="font-hand text-2xl text-muted">Case study</p>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
+                  <p className="font-hand text-2xl text-muted">Case study</p>
+                  {project.live && (
+                    <a href={project.live} target="_blank" rel="noreferrer" aria-label={`Open the live ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-1.5 rounded-lg border-2 border-ink bg-coral px-2.5 py-1 text-xs font-bold shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
+                      Live demo <ExternalLink size={13} aria-hidden />
+                    </a>
+                  )}
+                  {project.repo && (
+                    <a href={project.repo} target="_blank" rel="noreferrer" aria-label={`View the ${project.title} code on GitHub (opens in a new tab)`} className="inline-flex items-center gap-1.5 rounded-lg border-2 border-ink bg-white px-2.5 py-1 text-xs font-bold text-[#1f2430] shadow-[2px_2px_0_var(--shadow)] transition hover:-translate-y-0.5">
+                      <TechLogo name="github" size={14} /> GitHub
+                    </a>
+                  )}
+                </div>
                 <h2 id="case-study-title" className="glow font-hand text-5xl font-bold leading-none">
                   <span className="marker">{project.title}</span>
                 </h2>
@@ -125,16 +139,16 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               </button>
             </div>
 
-            <dl className="mt-6 grid gap-3 sm:[grid-template-columns:repeat(var(--n),minmax(0,1fr))]" style={{ "--n": project.metrics.length } as React.CSSProperties}>
-              {project.metrics.map((m) => (
-                <div key={m.label} className="rounded-xl border-2 border-ink p-4 text-center" style={{ background: `var(--${project.color})` }}>
-                  <dd className="glow font-hand text-5xl font-bold leading-none">
-                    <CountUp now value={m.value} prefix={m.prefix} suffix={m.suffix} />
-                  </dd>
-                  <dt className="mt-1 text-xs font-semibold">{m.label}</dt>
-                </div>
-              ))}
-            </dl>
+            <section aria-label="Built with" className="mt-6">
+              <h3 className="font-hand text-3xl font-bold">Built with</h3>
+              <ul className="mt-2 flex flex-wrap gap-2.5">
+                {(project.stack ?? project.tags).map((tag) => (
+                  <li key={tag}>
+                    <TechChip name={tag} size="lg" />
+                  </li>
+                ))}
+              </ul>
+            </section>
 
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <section>
@@ -143,7 +157,11 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               </section>
               <section>
                 <h3 className="font-hand text-3xl font-bold">What I did</h3>
-                <p className="mt-1 text-[15px] leading-relaxed text-muted">{project.approach}</p>
+                {project.approach.split("\n\n").map((para, i) => (
+                  <p key={i} className="mt-1 text-[15px] leading-relaxed text-muted [&:not(:first-of-type)]:mt-3">
+                    {para}
+                  </p>
+                ))}
               </section>
             </div>
 
@@ -159,18 +177,6 @@ function CaseStudy({ project, onClose }: { project: Project | null; onClose: () 
               ))}
             </ol>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-              <div className="flex flex-wrap gap-1.5">
-                {project.tags.map((t) => (
-                  <Tag key={t}>{t}</Tag>
-                ))}
-              </div>
-              {project.href && (
-                <a href={project.href} target="_blank" rel="noreferrer" aria-label={`View ${project.title} (opens in a new tab)`} className="inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-4 py-2 text-sm font-bold shadow-[3px_3px_0_var(--shadow)] transition hover:-translate-y-0.5">
-                View project <ExternalLink size={15} aria-hidden />
-              </a>
-              )}
-            </div>
           </motion.article>
         </motion.div>
       )}

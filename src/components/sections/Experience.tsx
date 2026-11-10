@@ -33,17 +33,19 @@ export function Experience({ showPlain = false }: { showPlain?: boolean }) {
                 <p className="font-semibold text-muted">{job.company}</p>
               </div>
             </div>
-            {showPlain && <p className="mt-1 text-sm italic text-muted">{job.plain}</p>}
-            <ul className="mt-2 space-y-1 text-sm leading-relaxed">
-              {job.points.map((p) => (
-                <li key={p} className="flex gap-2">
-                  <span aria-hidden className="text-accent">
-                    ✦
-                  </span>
-                  <span>{p}</span>
-                </li>
-              ))}
-            </ul>
+            {showPlain && job.plain && <p className="mt-1 text-sm italic text-muted">{job.plain}</p>}
+            {job.points.length > 0 && (
+              <ul className="mt-2 space-y-1 text-sm leading-relaxed">
+                {job.points.map((p) => (
+                  <li key={p} className="flex gap-2">
+                    <span aria-hidden className="text-accent">
+                      ✦
+                    </span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </motion.li>
         ))}
       </ol>

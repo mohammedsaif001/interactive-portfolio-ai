@@ -13,7 +13,7 @@ export function mockReply(input: string): string {
   if (/(fit|senior|role|full)/.test(q))
     return `${profile.name} has been building software since ${profile.since}, across frontend, backend and cloud, and currently works as a ${profile.role}. ${profile.availability}.`;
   if (/(experience|work|career|history|summar)/.test(q))
-    return profile.experience.map((j) => `${j.role}, ${j.company} (${j.period}): ${j.plain}`).join("\n");
+    return profile.experience.map((j) => `${j.role}, ${j.company} (${j.period}): ${j.plain ?? (j.points.join("; ") || "Early-career engineering role")}`).join("\n");
   if (/(skill|stack|tech)/.test(q))
     return profile.skills.map((s) => `${s.title}: ${s.items.join(", ")}`).join("\n");
   return chatFallback(profile.name);

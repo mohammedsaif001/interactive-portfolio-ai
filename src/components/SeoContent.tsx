@@ -25,12 +25,14 @@ export function SeoContent() {
           <h3>
             {j.role} at {j.company} ({j.period})
           </h3>
-          <p>{j.plain}</p>
-          <ul>
-            {j.points.map((p) => (
-              <li key={p}>{p}</li>
-            ))}
-          </ul>
+          {j.plain && <p>{j.plain}</p>}
+          {j.points.length > 0 && (
+            <ul>
+              {j.points.map((p) => (
+                <li key={p}>{p}</li>
+              ))}
+            </ul>
+          )}
         </section>
       ))}
 
@@ -40,7 +42,7 @@ export function SeoContent() {
           <h3>{p.title}</h3>
           <p>{p.blurb}</p>
           <p>{p.approach}</p>
-          <p>Technologies: {p.tags.join(", ")}</p>
+          <p>Technologies: {(p.stack ?? p.tags).join(", ")}</p>
         </section>
       ))}
 

@@ -6,7 +6,6 @@ import { profile } from "@/constants";
 import { Sketch } from "@/components/ui/Sketch";
 import { FloatIcon } from "@/components/ui/Doodles";
 import { Typewriter } from "@/components/ui/Motion";
-import { TechChip } from "@/components/ui/TechChip";
 import { ProfilePhoto } from "@/components/ui/ProfilePhoto";
 import { SocialLinks } from "./SocialLinks";
 
@@ -71,18 +70,6 @@ export function Intro() {
             <SocialLinks />
           </div>
         </div>
-      </div>
-
-      <div className="mt-6 border-t-2 border-dashed border-ink/40 pt-4">
-        <p className="font-hand text-2xl leading-none text-muted">I work with</p>
-        <ul className="mt-2 flex flex-wrap gap-2">
-          {/* every skill from the skills data, so this row can never drift from the Skills frame */}
-          {[...new Set(profile.skills.flatMap((g) => g.items))].map((t) => (
-            <li key={t}>
-              <TechChip name={t} />
-            </li>
-          ))}
-        </ul>
       </div>
     </Sketch>
   );

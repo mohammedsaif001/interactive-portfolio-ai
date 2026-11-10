@@ -44,7 +44,7 @@ export function Story() {
           </div>
           <ThemeToggle className="ml-auto !h-9 !w-9 shrink-0" />
         </div>
-        <nav ref={navRef}aria-label="Sections" className="relative flex gap-2 overflow-x-auto px-4 pb-2.5 [scrollbar-width:none]">
+        <nav ref={navRef} aria-label="Sections" className="relative flex gap-2 overflow-x-auto px-4 pb-2.5 [scrollbar-width:none]">
           {sections.map((s) => {
             const Icon = sectionIcons[s.id];
             const on = s.id === active;

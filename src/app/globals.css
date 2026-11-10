@@ -48,6 +48,35 @@
   --font-hand: var(--font-hand);
 }
 
+/* ---------- SCROLLBARS ----------
+   Hand-drawn look to match the rest of the site: an inked, rounded yellow thumb on a paper track.
+   Both themes follow automatically through the colour variables. */
+::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--yellow);
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--coral);
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* Firefox has no pseudo-elements: it gets a thin themed bar instead. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--ink) transparent;
+  }
+}
+
 html,
 body {
   height: 100%;
