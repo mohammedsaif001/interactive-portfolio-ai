@@ -1,5 +1,6 @@
 // Question-and-answer pairs: feed FAQ rich results, voice assistants and AI answer engines (AEO/GEO).
 import { profile } from "./index";
+import { siteUrl } from "./seo";
 
 
 export const faqs: { q: string; a: string }[] = [
@@ -30,6 +31,14 @@ export const faqs: { q: string; a: string }[] = [
   {
     q: "Where has Mohammed Saif worked?",
     a: profile.experience.map((j) => `${j.role} at ${j.company} (${j.period})`).join("; ") + ".",
+  },
+  {
+    q: "What is Grounded Brain AI Notebook?",
+    a: `Grounded Brain AI Notebook is a source-grounded AI notebook built by Mohammed Saif. People add documents, web pages, videos and code repositories, chat with them and generate study material, with every answer linked to the exact source passages. It uses RAG, vector search, MCP, Inngest and the OpenAI Agents SDK. Live at ${profile.projects[0].live}.`,
+  },
+  {
+    q: "What is Mohammed Saif's official website?",
+    a: `His official portfolio website is ${siteUrl}.`,
   },
   {
     q: "How can I contact or hire Mohammed Saif?",
