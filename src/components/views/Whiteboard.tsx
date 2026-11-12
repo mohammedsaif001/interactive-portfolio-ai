@@ -51,6 +51,9 @@ const widths: Record<SectionId, number> = { intro: 720, about: 520, experience: 
 // Approximate rendered heights, only so the minimap can draw frames; real sizes are measured by React Flow.
 const heights: Record<SectionId, number> = { intro: 418, about: 586, experience: 840, projects: 850, recs: 504, skills: 908, contact: 480 };
 
+// Narrowest each frame can be resized to before its content starts to overflow or collide.
+const minWidths: Record<SectionId, number> = { intro: 640, about: 420, experience: 440, projects: 480, recs: 420, skills: 640, contact: 460 };
+
 const hidden = { opacity: 0, pointerEvents: "none" as const, width: 1, height: 1 };
 
 // A node is one whiteboard "frame". Hidden handles on every side let edges attach anywhere.
@@ -63,7 +66,7 @@ function FrameNode({ data }: NodeProps<Node<{ id: SectionId }>>) {
           the gesture from also dragging the frame or panning the board. It is a small fixed-size pill, not
           full height: React Flow scales the control with zoom, so a 100%-tall strip stuck out far past the
           card when the board was zoomed out. */}
-      <NodeResizeControl position="right" resizeDirection="horizontal" minWidth={420} maxWidth={1300} className="nodrag nopan" style={{ background: "transparent", border: "none", width: 22, height: 64, top: "50%", marginTop: -32, right: -11, cursor: "ew-resize", zIndex: 6 }}>
+      <NodeResizeControl position="right" resizeDirection="horizontal" minWidth={minWidths[data.id]} maxWidth={1300} className="nodrag nopan" style={{ background: "transparent", border: "none", width: 22, height: 64, top: "50%", marginTop: -32, right: -11, cursor: "ew-resize", zIndex: 6 }}>
         <span className="absolute left-1/2 top-1/2 grid h-12 w-5 opacity-0 transition-opacity group-hover:opacity-100 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border-2 border-ink bg-card shadow-[2px_2px_0_var(--shadow)]" title="Drag to resize">
           <GripVertical size={14} aria-hidden />
         </span>
