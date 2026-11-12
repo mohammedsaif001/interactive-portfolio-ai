@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   creator: "Mohammed Saif",
   publisher: "Mohammed Saif",
   category: "technology",
-  alternates: { canonical: "/" },
+  alternates: { canonical: "/", languages: { "en-IN": "/", "x-default": "/" } },
   openGraph: {
     type: "profile",
     url: siteUrl,
