@@ -18,6 +18,6 @@ export const basics = {
   // longer intro, also reused by the chat bot and the FAQ answer "What does Mohammed Saif do?"
   bio: "Senior software engineer building software since 2021: React and Next.js interfaces, Node.js services and Azure OpenAI. Today I design how AI fits into Microsoft D365 Commerce, and lead the sprints, reviews and mentoring around it.",
   availability: "Open to senior full-stack and GenAI engineering roles, remote or hybrid in Bangalore",
-  resumeHref: "", // TODO: add public/resume.pdf, then set this to "/resume.pdf". Empty hides every Resume button.
+  resumeHref: "/resume.pdf", // public/resume.pdf. Empty hides every Resume button.
   email: "imohdsaif.ai@gmail.com",
 };
