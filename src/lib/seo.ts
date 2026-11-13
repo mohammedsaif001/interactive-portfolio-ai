@@ -24,7 +24,8 @@ export const structuredData = {
       alumniOf: { "@type": "CollegeOrUniversity", name: "Presidency University", address: { "@type": "PostalAddress", addressLocality: "Bengaluru", addressCountry: "IN" } },
       worksFor: { "@type": "Organization", name: "Basofa Consulting Private Limited" },
       knowsAbout: profile.skills.flatMap((s) => s.items),
-      sameAs: profile.socials.map((s) => s.href),
+      sameAs: [siteUrl, ...profile.socials.map((s) => s.href)],
+      mainEntityOfPage: { "@id": `${siteUrl}/#profilepage` },
     },
     {
       "@type": "WebSite",
@@ -42,6 +43,26 @@ export const structuredData = {
       name: seoTitle,
       isPartOf: { "@id": `${siteUrl}/#website` },
       mainEntity: { "@id": personId },
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${siteUrl}/#projects`,
+      name: `Projects by ${profile.name}`,
+      itemListElement: profile.projects.map((p, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        item: {
+          "@type": "SoftwareApplication",
+          name: p.title,
+          description: p.blurb,
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Web",
+          author: { "@id": personId },
+          keywords: (p.stack ?? p.tags).join(", "),
+          ...(p.live && { url: p.live }),
+          ...(p.repo && { codeRepository: p.repo }),
+        },
+      })),
     },
     {
       "@type": "FAQPage",

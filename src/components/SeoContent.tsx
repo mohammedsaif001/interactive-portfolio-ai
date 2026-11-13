@@ -1,5 +1,5 @@
 import { profile } from "@/constants";
-import { aliases } from "@/constants/seo";
+import { aliases, siteUrl } from "@/constants/seo";
 import { faqs } from "@/constants/faqs";
 
 /**
@@ -43,6 +43,16 @@ export function SeoContent() {
           <p>{p.blurb}</p>
           <p>{p.approach}</p>
           <p>Technologies: {(p.stack ?? p.tags).join(", ")}</p>
+          {p.live && (
+            <p>
+              Live: <a href={p.live}>{p.live}</a>
+            </p>
+          )}
+          {p.repo && (
+            <p>
+              Source code: <a href={p.repo}>{p.repo}</a>
+            </p>
+          )}
         </section>
       ))}
 
@@ -65,6 +75,9 @@ export function SeoContent() {
 
       <h2>Find Mohammed Saif online</h2>
       <ul>
+        <li>
+          <a href={siteUrl}>Official website {siteUrl}</a>
+        </li>
         {profile.socials.map((s) => (
           <li key={s.id}>
             <a href={s.href}>

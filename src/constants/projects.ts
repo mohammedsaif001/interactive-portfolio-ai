@@ -6,12 +6,13 @@ import type { Project } from "./types";
 
 export const projects = [
   {
-    title: "Source-grounded AI Notebook",
+    title: "Grounded Brain AI Notebook",
     blurb: "A web app where people add documents, web pages, videos and code repositories, then chat with them and generate study material, with answers that point back to the exact passages.",
     impact: "Every answer links back to its source passages",
-    tags: ["TypeScript", "Next.js", "Express", "PostgreSQL"],
-    stack: ["TypeScript", "Next.js", "React", "Express", "PostgreSQL"],
+    tags: ["TypeScript", "Next.js", "Express", "PostgreSQL", "RAG", "MCP"],
+    stack: ["TypeScript", "Next.js", "React", "Express", "PostgreSQL", "MCP", "RAG", "Azure", "Inngest", "Vector Search", "OpenAI Agents SDK"],
     repo: "https://github.com/mohammedsaif001/grounded-brain-notebook-llm",
+    live: "https://grounded-brain.imohdsaif.in",
     color: "yellow",
     role: "Full-stack engineer · designed and built the backend, web interface and documentation",
     problem: "People who study from many scattered sources, such as PDFs, articles and videos, struggle to ask questions across them and trust the answers. They need replies tied to their own material, plus a quick way to turn it into things to revise from.",

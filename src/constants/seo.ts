@@ -1,8 +1,8 @@
 // Search-engine and social-card text: site URL, title, description, handles and keywords.
 // The structured-data (JSON-LD) builder that uses these lives in src/lib/seo.ts.
 
-// Set NEXT_PUBLIC_SITE_URL (e.g. https://imohdsaif.dev) once you attach a custom domain.
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://imohdsaif-ai.azurewebsites.net").replace(/\/$/, "");
+// Official domain. NEXT_PUBLIC_SITE_URL can override it (e.g. for a preview deployment).
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.imohdsaif.in").replace(/\/$/, "");
 
 export const siteName = "Mohammed Saif";
 
@@ -11,7 +11,7 @@ export const seoDescription =
   "Mohammed Saif (imohdsaif) is a Bangalore-based Senior Software Engineer open to immediate joining. React, Next.js, Node.js and GenAI: Azure OpenAI, RAG, MCP, AI agents, Microsoft D365 Commerce.";
 
 /** Short handles and spellings people actually type. */
-export const aliases = ["mohammedsaif001", "mohammed001saif", "imohdsaif", "imohdsaif.in", "imohdsaif.com", "imohdsaif.dev", "imohdsaif.ai", "Mohammad Saif", "Md Saif"];
+export const aliases = ["mohammedsaif001", "mohammed001saif", "imohdsaif", "imohdsaif.in", "www.imohdsaif.in", "imohdsaif.com", "imohdsaif.dev", "imohdsaif.ai", "Mohammad Saif", "Md Saif"];
 
 // Grouped: name, role + city combos, places, then skills. Add new phrases under the matching group.
 export const keywords = [
@@ -22,6 +22,11 @@ export const keywords = [
   "Mohammed Saif Bengaluru",
   "Mohammed Saif software engineer",
   "Mohammed Saif portfolio",
+  "imohdsaif.in",
+  "www.imohdsaif.in",
+  "Grounded Brain",
+  "Grounded Brain AI Notebook",
+  "Grounded Brain RAG app",
   "Mohammed Saif Presidency University",
   ...aliases,
   // role + intent
