@@ -68,7 +68,7 @@ export function QuickOverview({ onBack }: { onBack: () => void }) {
           </nav>
 
           {profile.resumeHref && (
-            <a href={profile.resumeHref} download className="flex h-10 items-center gap-2 rounded-xl border-2 border-ink bg-coral px-3 text-sm font-bold shadow-[3px_3px_0_var(--shadow)]">
+            <a href={profile.resumeHref} className="flex h-10 items-center gap-2 rounded-xl border-2 border-ink bg-coral px-3 text-sm font-bold shadow-[3px_3px_0_var(--shadow)]">
               <Download size={16} aria-hidden /> <span className="hidden sm:inline">Resume</span>
             </a>
           )}
