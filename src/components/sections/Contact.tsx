@@ -5,11 +5,10 @@ import { SocialLinks } from "./SocialLinks";
 import { CurvyArrow, FloatIcon } from "@/components/ui/Doodles";
 
 export function ResumeButton({ className = "" }: { className?: string }) {
-  if (!profile.resumeHref) return null; // no PDF yet: hide the button instead of linking to a 404
+  if (!profile.resumeHref) return null;
   return (
     <a
       href={profile.resumeHref}
-      download
       className={`inline-flex items-center gap-2 rounded-xl border-2 border-ink bg-coral px-5 py-3 text-base font-bold shadow-[4px_4px_0_var(--shadow)] transition hover:-translate-y-0.5 hover:shadow-[6px_6px_0_var(--shadow)] active:translate-y-0.5 active:shadow-[2px_2px_0_var(--shadow)] ${className}`}
     >
       <Download size={18} aria-hidden /> Download resume
